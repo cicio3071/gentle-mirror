@@ -726,7 +726,7 @@ body {
           <div class="quote-text" id="quote-text"></div>
           <div class="quote-source" id="quote-source"></div>
           <div class="quote-actions">
-            <button class="quote-btn" onclick="nextQuote()">換一句</button>
+            <button class="quote-btn" onclick="nextQuote(true)">換一句</button>
             <button class="quote-btn" id="quote-save-btn" onclick="saveQuote()">收藏這句</button>
           </div>
         </div>
@@ -1091,6 +1091,8 @@ let state = {
   taskStreaks: {},
   unlockedBadges: [],
   notes: [],
+  dailyMood: {},   // { "YYYY-MM-DD": { mood: "calm", text: "..." } }
+  dailyQuote: {},  // { "YYYY-MM-DD": quoteIndex } - keeps today's quote stable across reloads
 };
 
 function getTW(d) {
@@ -1105,6 +1107,8 @@ function loadState() {
     Object.assign(state, saved);
     // compat: savedCards was previously a flat array, reset if so
     if (Array.isArray(state.savedCards)) state.savedCards = {};
+    if (!state.dailyMood) state.dailyMood = {};
+    if (!state.dailyQuote) state.dailyQuote = {};
   } catch(e) {}
 }
 function saveState() {
@@ -1141,6 +1145,7 @@ function initApp() {
   updateStreak();
   renderCheckin();
   nextQuote();
+  restoreDailyMood();
   renderTasks();
   renderNotes();
   const now = getTW(new Date());
@@ -1224,11 +1229,19 @@ function doCheckin(e) {
 
 // ── QUOTES ──
 let quoteShown = [];
-function nextQuote() {
-  if (quoteShown.length >= QUOTES.length) quoteShown = [];
+function nextQuote(forceNew) {
+  const today = todayStr();
   let idx;
-  do { idx = Math.floor(Math.random()*QUOTES.length); } while(quoteShown.includes(idx));
-  quoteShown.push(idx);
+  if (!forceNew && state.dailyQuote[today] !== undefined) {
+    // restore today's quote instead of picking a new random one (e.g. after reload/import)
+    idx = state.dailyQuote[today];
+  } else {
+    if (quoteShown.length >= QUOTES.length) quoteShown = [];
+    do { idx = Math.floor(Math.random()*QUOTES.length); } while(quoteShown.includes(idx));
+    quoteShown.push(idx);
+    state.dailyQuote[today] = idx;
+    saveState();
+  }
   currentQuoteIdx = idx;
   const qt = document.getElementById("quote-text");
   const qs = document.getElementById("quote-source");
@@ -1237,7 +1250,6 @@ function nextQuote() {
     qt.textContent = QUOTES[idx].text;
     qs.textContent = "── " + QUOTES[idx].source;
     qt.style.opacity=1; qs.style.opacity=1;
-    const today = todayStr();
     const saved = (state.savedQuotes[today]||[]).includes(idx);
     const btn = document.getElementById("quote-save-btn");
     btn.textContent = saved ? "已收藏 ✓" : "收藏這句";
@@ -1265,17 +1277,29 @@ function saveQuote() {
 let currentMoodResponse = "";
 function selectMood(mood, label) {
   document.querySelectorAll(".mood-btn").forEach(b=>b.classList.remove("selected"));
-  event.currentTarget.classList.add("selected");
+  if (event && event.currentTarget) event.currentTarget.classList.add("selected");
+  else markMoodBtnSelected(mood);
   const pool = MOOD_RESPONSES[mood];
   const text = pool[Math.floor(Math.random()*pool.length)];
   currentMoodResponse = text;
+  state.dailyMood[todayStr()] = { mood, text };
+  saveState();
+  renderMoodResponseCard(mood, text);
+}
+function markMoodBtnSelected(mood) {
+  const btn = document.querySelector(`.mood-btn[onclick*="'${mood}'"]`);
+  if (btn) btn.classList.add("selected");
+}
+function renderMoodResponseCard(mood, text) {
+  const today = todayStr();
+  const saved = (state.savedCards[today]||[]).includes(text);
   const area = document.getElementById("mood-response");
   area.innerHTML = `
     <div class="response-card">
       <div class="response-text">${text}</div>
       <div class="response-actions">
         <button class="response-btn" onclick="refreshMoodResponse('${mood}')">換一句</button>
-        <button class="response-btn" id="card-save-btn" onclick="saveMoodCard()">收藏這句</button>
+        <button class="response-btn ${saved?"saved":""}" id="card-save-btn" onclick="saveMoodCard()">${saved?"已收藏 ✓":"收藏這句"}</button>
       </div>
     </div>`;
 }
@@ -1283,9 +1307,25 @@ function refreshMoodResponse(mood) {
   const pool = MOOD_RESPONSES[mood];
   const text = pool[Math.floor(Math.random()*pool.length)];
   currentMoodResponse = text;
+  state.dailyMood[todayStr()] = { mood, text };
+  saveState();
   document.querySelector(".response-text").textContent = text;
   const sb = document.getElementById("card-save-btn");
   if(sb){ sb.textContent="收藏這句"; sb.className="response-btn"; }
+}
+function restoreDailyMood() {
+  const today = todayStr();
+  const saved = state.dailyMood[today];
+  if (saved) {
+    currentMoodResponse = saved.text;
+    renderMoodResponseCard(saved.mood, saved.text);
+    markMoodBtnSelected(saved.mood);
+  } else {
+    currentMoodResponse = "";
+    const area = document.getElementById("mood-response");
+    if (area) area.innerHTML = "";
+    document.querySelectorAll(".mood-btn").forEach(b=>b.classList.remove("selected"));
+  }
 }
 function saveMoodCard() {
   if (!currentMoodResponse) return;
@@ -1617,7 +1657,20 @@ function exportData(){
 function importData(e){
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=ev=>{ try{ Object.assign(state,JSON.parse(ev.target.result)); saveState(); showToast("資料還原成功 ✨"); initApp(); renderNotes(); renderCalendar(); }catch{ showToast("檔案格式不對，請確認"); } };
+  r.onload=ev=>{
+    try{
+      const imported = JSON.parse(ev.target.result);
+      Object.assign(state, imported);
+      if (Array.isArray(state.savedCards)) state.savedCards = {};
+      if (!state.dailyMood) state.dailyMood = {};
+      if (!state.dailyQuote) state.dailyQuote = {};
+      saveState();
+      showToast("資料還原成功 ✨");
+      initApp();
+      renderNotes();
+      renderCalendar();
+    }catch{ showToast("檔案格式不對，請確認"); }
+  };
   r.readAsText(f); e.target.value="";
 }
 function clearData(){ if(!confirm("確定要清除所有資料嗎？這個動作無法復原。")) return; localStorage.removeItem("gm_v2"); location.reload(); }
