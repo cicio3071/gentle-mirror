@@ -1148,9 +1148,9 @@ function initApp() {
   const name = state.name;
   document.getElementById("top-greeting").textContent = name + "，你好";
   const d = getTW(new Date());
-  const wd = ["日","一","二","三","四","五","六"][d.getDay()];
+  const wd = ["日","一","二","三","四","五","六"][d.getUTCDay()];
   document.getElementById("top-date").textContent =
-    d.getFullYear()+" 年 "+(d.getMonth()+1)+" 月 "+d.getDate()+" 日 · 週"+wd;
+    d.getUTCFullYear()+" 年 "+(d.getUTCMonth()+1)+" 月 "+d.getUTCDate()+" 日 · 週"+wd;
   document.getElementById("name-setting").value = name;
   updateStreak();
   renderCheckin();
@@ -1159,7 +1159,7 @@ function initApp() {
   renderTasks();
   renderNotes();
   const now = getTW(new Date());
-  calYear = now.getFullYear(); calMonth = now.getMonth();
+  calYear = now.getUTCFullYear(); calMonth = now.getUTCMonth();
   renderCalendar();
 
   // bind overlay close
@@ -1497,9 +1497,13 @@ function noteCardHtml(n) {
 }
 function formatNoteTime(id) {
   // id is Date.now() at creation/edit time; render Taiwan local hh:mm
+  // IMPORTANT: must use getUTCHours/getUTCMinutes here, not getHours/getMinutes.
+  // getTW() shifts the timestamp by +8h and is meant to be read with UTC accessors
+  // (matching how todayStr() uses toISOString()). Using local getHours() would apply
+  // the device's own timezone offset on top of this +8h shift, double-counting it.
   const d = getTW(new Date(id));
-  const hh = String(d.getHours()).padStart(2,"0");
-  const mm = String(d.getMinutes()).padStart(2,"0");
+  const hh = String(d.getUTCHours()).padStart(2,"0");
+  const mm = String(d.getUTCMinutes()).padStart(2,"0");
   return hh + ":" + mm;
 }
 let starFilterOn = false;
