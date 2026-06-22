@@ -364,6 +364,18 @@ body {
 @keyframes confettiFall { from{opacity:1;transform:translateY(-20px) rotate(0deg)} to{opacity:0;transform:translateY(100vh) rotate(720deg)} }
 .empty-state { text-align: center; padding: 40px 20px; color: var(--text-light); font-size: 14px; line-height: 1.9; }
 .empty-state-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
+/* ── OVERLAY (notebook + future sheets) ── */
+.overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.overlay.open { opacity: 1; pointer-events: all; }
+.overlay-sheet { width: 100%; max-width: 480px; margin: 0 auto; background: var(--surface); border-radius: 24px 24px 0 0; padding: 28px 24px calc(48px + env(safe-area-inset-bottom)); max-height: 80vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s, background 0.4s; }
+.overlay.open .overlay-sheet { transform: translateY(0); }
+.overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.overlay-title { font-size: 17px; font-weight: 500; }
+.overlay-sub { font-size: 13px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.8; }
+.overlay-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); padding: 0; }
+/* notebook button */
+.notebook-btn { background: none; border: none; font-size: 22px; cursor: pointer; padding: 4px; border-radius: 8px; transition: opacity 0.2s; }
+.notebook-btn:hover { opacity: 0.7; }
 </style>
 </head>
 <body>
@@ -400,7 +412,10 @@ body {
         <div class="top-greeting" id="top-greeting">你好</div>
         <div class="top-date" id="top-date"></div>
       </div>
-      <div class="streak-badge" id="streak-badge">🌱 0 天</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="streak-badge" id="streak-badge">🌱 0 天</div>
+        <button class="notebook-btn" onclick="openNotebook()" title="我的引言庫">📒</button>
+      </div>
     </div>
 
     <div class="tab-content">
@@ -422,7 +437,7 @@ body {
             <div class="quote-source" id="quote-source"></div>
             <div class="quote-actions">
               <button class="quote-btn" onclick="nextQuote(true)">換一句</button>
-              <button class="quote-btn" id="quote-save-btn" onclick="saveQuote()">收藏這句</button>
+              <button class="quote-btn" id="quote-add-btn" onclick="addCurrentQuoteToLibrary()">加入我的庫</button>
             </div>
           </div>
         </div>
@@ -528,14 +543,7 @@ body {
             <button class="setting-btn" style="color:#c4807a;border-color:#f0d4d4" onclick="clearData()">清除</button>
           </div>
         </div>
-        <div class="card">
-          <div class="card-title">我的引言</div>
-          <div class="custom-quote-add">
-            <input id="custom-quote-input" type="text" placeholder="加入一句你喜歡的話…" maxlength="120">
-            <button onclick="addCustomQuote()">加入</button>
-          </div>
-          <div class="custom-quote-list" id="custom-quote-list"></div>
-        </div>
+
         <div class="setting-about">輕鏡 · 你今天存在著<br>所有資料都只存在你的裝置裡</div>
       </div>
 
@@ -554,6 +562,22 @@ body {
       <button class="note-save-btn" onclick="saveNote()">儲存</button>
       <button class="note-delete-btn" id="note-delete-btn" style="display:none" onclick="deleteNote()">刪除</button>
     </div>
+  </div>
+</div>
+
+<!-- NOTEBOOK OVERLAY -->
+<div class="overlay" id="notebook-overlay">
+  <div class="overlay-sheet">
+    <div class="overlay-header">
+      <div class="overlay-title">📒 我的引言庫</div>
+      <button class="overlay-close" id="notebook-close">✕</button>
+    </div>
+    <div class="overlay-sub">你加入的句子，會一起出現在每天的引言輪替裡。</div>
+    <div class="custom-quote-add">
+      <input id="notebook-input" type="text" placeholder="加入一句你喜歡的話…" maxlength="120">
+      <button onclick="addCustomQuoteFromNotebook()">加入</button>
+    </div>
+    <div class="custom-quote-list" id="notebook-quote-list"></div>
   </div>
 </div>
 
@@ -684,7 +708,6 @@ let state = {
   name:"", theme:"light",
   checkinDates:[],
   savedQuotes:{},
-  savedCards:{},
   notes:[],
   dailyMood:{},
   dailyQuote:{},
@@ -699,7 +722,6 @@ function loadState(){
   try{
     const s=JSON.parse(localStorage.getItem("gm_v3")||"{}");
     Object.assign(state,s);
-    if(Array.isArray(state.savedCards)) state.savedCards={};
     if(!state.dailyMood) state.dailyMood={};
     if(!state.dailyQuote) state.dailyQuote={};
     if(!state.dailyTask) state.dailyTask={};
@@ -735,10 +757,11 @@ function initApp(){
   restoreDailyMood();
   renderNotes();
   renderTodayTask();
-  renderCustomQuotes();
   initTimer();
   document.getElementById("note-modal").onclick=function(e){if(e.target===this)closeNoteModal();};
   document.getElementById("note-modal-close").onclick=closeNoteModal;
+  document.getElementById("notebook-overlay").onclick=function(e){if(e.target===this)closeNotebook();};
+  document.getElementById("notebook-close").onclick=closeNotebook;
 }
 
 function updateStreak(){ document.getElementById("streak-badge").textContent="🌱 打卡 "+state.checkinDates.length+" 天"; }
@@ -796,37 +819,50 @@ function nextQuote(forceNew){
     btn.textContent=saved?"已收藏 ✓":"收藏這句"; btn.className=saved?"quote-btn saved":"quote-btn";
   },300);
 }
-function saveQuote(){
-  const today=todayStr();
-  if(!state.savedQuotes[today]) state.savedQuotes[today]=[];
-  const already=state.savedQuotes[today].indexOf(currentQuoteIdx);
-  const btn=document.getElementById("quote-save-btn");
-  if(already!==-1){ state.savedQuotes[today].splice(already,1); btn.textContent="收藏這句"; btn.className="quote-btn"; showToast("已取消收藏"); }
-  else{ state.savedQuotes[today].push(currentQuoteIdx); btn.textContent="已收藏 ✓"; btn.className="quote-btn saved"; showToast("收藏成功 🌸"); }
+function addCurrentQuoteToLibrary(){
+  const pool=allQuotes();
+  const q=pool[currentQuoteIdx];
+  if(!q) return;
+  // avoid duplicates
+  if(state.customQuotes.some(c=>c.text===q.text)){ showToast("這句已經在你的庫裡了"); return; }
+  state.customQuotes.push({text:q.text, id:Date.now()});
   saveState();
+  const btn=document.getElementById("quote-add-btn");
+  if(btn){ btn.textContent="已加入 ✓"; btn.className="quote-btn saved"; setTimeout(()=>{ btn.textContent="加入我的庫"; btn.className="quote-btn"; },2000); }
+  showToast("加入引言庫了 🌸");
 }
 
 // ── CUSTOM QUOTES ──
-function addCustomQuote(){
-  const input=document.getElementById("custom-quote-input");
+function addCustomQuoteFromNotebook(){
+  const input=document.getElementById("notebook-input");
   const text=input.value.trim();
   if(!text){ showToast("請輸入句子內容"); return; }
+  if(state.customQuotes.some(q=>q.text===text)){ showToast("這句已經在庫裡了"); return; }
   state.customQuotes.push({text,id:Date.now()});
   saveState(); input.value="";
-  renderCustomQuotes(); showToast("加入了 🌸");
+  renderNotebook(); showToast("加入了 🌸");
+  quoteShown=[];  // reset shown list so new quote can appear soon
 }
 function deleteCustomQuote(id){
   state.customQuotes=state.customQuotes.filter(q=>q.id!=id);
-  saveState(); renderCustomQuotes(); showToast("已刪除");
+  saveState(); renderNotebook(); showToast("已刪除");
 }
-function renderCustomQuotes(){
-  const list=document.getElementById("custom-quote-list");
-  if(!state.customQuotes.length){ list.innerHTML='<div class="custom-quote-empty">還沒有加入任何句子</div>'; return; }
+function renderNotebook(){
+  const list=document.getElementById("notebook-quote-list");
+  if(!list) return;
+  if(!state.customQuotes.length){ list.innerHTML='<div class="custom-quote-empty">還沒有加入任何句子<br>可以從今日引言點「加入我的庫」</div>'; return; }
   list.innerHTML=state.customQuotes.map(q=>`
     <div class="custom-quote-item">
       <span>${esc(q.text)}</span>
       <button class="custom-quote-del" onclick="deleteCustomQuote(${q.id})">✕</button>
     </div>`).join("");
+}
+function openNotebook(){
+  renderNotebook();
+  document.getElementById("notebook-overlay").classList.add("open");
+}
+function closeNotebook(){
+  document.getElementById("notebook-overlay").classList.remove("open");
 }
 
 // ── MOOD ──
@@ -845,13 +881,11 @@ function markMoodBtnSelected(mood){
   if(btn) btn.classList.add("selected");
 }
 function renderMoodCard(mood,text){
-  const today=todayStr(), saved=(state.savedCards[today]||[]).includes(text);
   document.getElementById("mood-response").innerHTML=`
     <div class="response-card">
       <div class="response-text">${text}</div>
       <div class="response-actions">
         <button class="response-btn" onclick="refreshMood('${mood}')">換一句</button>
-        <button class="response-btn ${saved?"saved":""}" id="card-save-btn" onclick="saveMoodCard()">${saved?"已收藏 ✓":"收藏這句"}</button>
       </div>
     </div>`;
 }
@@ -862,15 +896,7 @@ function refreshMood(mood){
   const sb=document.getElementById("card-save-btn");
   if(sb){sb.textContent="收藏這句";sb.className="response-btn";}
 }
-function saveMoodCard(){
-  if(!currentMoodResponse) return;
-  const btn=document.getElementById("card-save-btn"), today=todayStr();
-  if(!state.savedCards[today]) state.savedCards[today]=[];
-  const idx=state.savedCards[today].indexOf(currentMoodResponse);
-  if(idx!==-1){ state.savedCards[today].splice(idx,1); if(btn){btn.textContent="收藏這句";btn.classList.remove("saved");} showToast("已取消收藏"); }
-  else{ state.savedCards[today].push(currentMoodResponse); if(btn){btn.textContent="已收藏 ✓";btn.classList.add("saved");} showToast("收藏成功 ✨"); }
-  saveState();
-}
+
 function restoreDailyMood(){
   const today=todayStr(), saved=state.dailyMood[today];
   if(saved){ currentMoodResponse=saved.text; renderMoodCard(saved.mood,saved.text); markMoodBtnSelected(saved.mood); }
@@ -1043,8 +1069,7 @@ function importData(e){
     try{
       const d=JSON.parse(ev.target.result);
       Object.assign(state,d);
-      if(Array.isArray(state.savedCards)) state.savedCards={};
-      if(!state.dailyMood) state.dailyMood={};
+        if(!state.dailyMood) state.dailyMood={};
       if(!state.dailyQuote) state.dailyQuote={};
       if(!state.dailyTask) state.dailyTask={};
       if(!state.customQuotes) state.customQuotes=[];
