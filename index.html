@@ -9,80 +9,53 @@
 
 /* ── THEMES ── */
 :root, [data-theme="light"] {
-  --bg: #fdf8f4;
-  --surface: #ffffff;
-  --surface2: #fef4ec;
-  --border: #f0e6da;
-  --text-main: #3d2e24;
-  --text-sub: #9c7e6e;
-  --text-light: #c4a99a;
-  --accent1: #e8a87c;
-  --accent2: #a8c5b0;
-  --accent3: #b8a4d4;
-  --accent4: #f2c4c4;
-  --star: #f0c060;
-  --nav-bg: rgba(255,255,255,0.92);
-  --shadow-card: 0 2px 12px rgba(180,130,100,0.10);
-  --flip-front: linear-gradient(135deg,#fef4ec,#fde8f4);
+  --bg: #fdf8f4; --surface: #ffffff; --surface2: #fef4ec;
+  --border: #f0e6da; --text-main: #3d2e24; --text-sub: #9c7e6e;
+  --text-light: #c4a99a; --accent1: #e8a87c; --accent2: #a8c5b0;
+  --accent3: #b8a4d4; --accent4: #f2c4c4; --star: #f0c060;
+  --nav-bg: rgba(255,255,255,0.92); --shadow-card: 0 2px 12px rgba(180,130,100,0.10);
   --flip-back: linear-gradient(135deg,#eef6f0,#e8f0fa);
   --flip-back-border: #d4e4e8;
   --checkin-idle: linear-gradient(135deg,#fde8d8,#fcd4c0);
   --checkin-done: linear-gradient(135deg,#d4e8da,#c0dcc8);
   --checkin-idle-shadow: rgba(232,168,124,0.3);
   --checkin-done-shadow: rgba(168,197,176,0.3);
+  --timer-track: #f0e6da; --timer-fill: #e8a87c;
 }
-
 [data-theme="dark"] {
-  --bg: #1c1f26;
-  --surface: #252930;
-  --surface2: #2d323c;
-  --border: #363c48;
-  --text-main: #e8eaf0;
-  --text-sub: #9098aa;
-  --text-light: #5a6070;
-  --accent1: #e8a87c;
-  --accent2: #7ab898;
-  --accent3: #a094cc;
-  --accent4: #c49494;
-  --star: #d4a840;
-  --nav-bg: rgba(28,31,38,0.96);
-  --shadow-card: 0 2px 16px rgba(0,0,0,0.35);
-  --flip-front: linear-gradient(135deg,#2d323c,#2a2d3a);
+  --bg: #1c1f26; --surface: #252930; --surface2: #2d323c;
+  --border: #363c48; --text-main: #e8eaf0; --text-sub: #9098aa;
+  --text-light: #5a6070; --accent1: #e8a87c; --accent2: #7ab898;
+  --accent3: #a094cc; --accent4: #c49494; --star: #d4a840;
+  --nav-bg: rgba(28,31,38,0.96); --shadow-card: 0 2px 16px rgba(0,0,0,0.35);
   --flip-back: linear-gradient(135deg,#222c28,#222838);
   --flip-back-border: #2a3a32;
   --checkin-idle: linear-gradient(135deg,#2d2a28,#343028);
   --checkin-done: linear-gradient(135deg,#1e2e28,#1a2824);
   --checkin-idle-shadow: rgba(232,168,124,0.12);
   --checkin-done-shadow: rgba(122,184,152,0.12);
+  --timer-track: #363c48; --timer-fill: #e8a87c;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-html {
-  background: var(--bg);
-  transition: background 0.4s;
-  height: 100%;
-}
-
-/* ── BASE (mobile first, < 768px) ── */
+html { background: var(--bg); transition: background 0.4s; height: 100%; }
 body {
   font-family: 'Noto Sans TC','Nunito',sans-serif;
-  background: var(--bg);
-  color: var(--text-main);
-  height: 100%;
-  height: 100dvh; /* dynamic viewport height: accounts for mobile browser UI changes */
-  overflow: hidden; /* page itself never scrolls; only .tab-content scrolls. prevents iOS fixed-element jitter */
+  background: var(--bg); color: var(--text-main);
+  height: 100%; height: 100dvh; overflow: hidden;
   transition: background 0.4s, color 0.4s;
+}
+@media (min-width: 768px) {
+  body { overflow: hidden; height: 100%; height: 100dvh; }
+  html { height: 100%; }
 }
 
 /* ── WELCOME ── */
 #welcome-screen {
   position: fixed; inset: 0; z-index: 999;
-  background: var(--bg);
-  display: flex; flex-direction: column;
+  background: var(--bg); display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 40px 32px; text-align: center;
-  transition: opacity 0.6s ease;
+  padding: 40px 32px; text-align: center; transition: opacity 0.6s ease;
 }
 #welcome-screen.hide { opacity: 0; pointer-events: none; }
 .welcome-inner { width: 100%; max-width: 420px; }
@@ -93,11 +66,9 @@ body {
 .welcome-input-wrap { width: 100%; margin-bottom: 20px; }
 .welcome-input-wrap label { display: block; font-size: 13px; color: var(--text-sub); margin-bottom: 8px; text-align: left; }
 .welcome-input {
-  width: 100%; padding: 14px 18px;
-  border: 2px solid var(--border); border-radius: 12px;
-  background: var(--surface); font-size: 16px;
-  font-family: inherit; color: var(--text-main); outline: none;
-  transition: border-color 0.2s, background 0.4s;
+  width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px;
+  background: var(--surface); font-size: 16px; font-family: inherit;
+  color: var(--text-main); outline: none; transition: border-color 0.2s, background 0.4s;
 }
 .welcome-input:focus { border-color: var(--accent1); }
 .welcome-btn {
@@ -109,180 +80,88 @@ body {
 }
 .welcome-btn:active { transform: scale(0.97); opacity: 0.9; }
 
-/* ── LAYOUT: mobile ── */
-#app {
-  display: flex; flex-direction: column;
-  height: 100%; height: 100dvh;
-}
-.app-shell {
-  display: flex; flex-direction: column;
-  flex: 1; min-height: 0; /* allow child to shrink so tab-content scroll works inside fixed-height parent */
-  overflow: hidden;
-}
-.top-bar { padding: 20px 24px 8px; display: flex; align-items: center; justify-content: space-between; }
+/* ── LAYOUT ── */
+#app { display: flex; flex-direction: column; height: 100%; height: 100dvh; }
+.app-shell { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+.top-bar { padding: 20px 24px 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .top-greeting { font-size: 18px; font-weight: 500; }
 .top-date { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+.top-right { display: flex; align-items: center; gap: 10px; }
 .streak-badge {
   background: var(--surface2); border-radius: 20px;
-  padding: 6px 14px; font-size: 13px; color: var(--accent1);
-  border: 1.5px solid var(--border);
+  padding: 6px 14px; font-size: 13px; color: var(--accent1); border: 1.5px solid var(--border);
 }
-
 .tab-content { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 12px 20px calc(88px + env(safe-area-inset-bottom)); }
 .tab-pane { display: none; animation: fadeIn 0.35s ease; }
 .tab-pane.active { display: block; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 
-/* ── BOTTOM NAV (mobile default) ── */
+/* ── BOTTOM NAV ── */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
+  background: var(--nav-bg); backdrop-filter: blur(12px);
   border-top: 1.5px solid var(--border);
   display: flex; padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-  transition: background 0.4s, border-color 0.4s;
-  z-index: 100;
+  transition: background 0.4s, border-color 0.4s; z-index: 100;
 }
 .nav-btn {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; gap: 3px; padding: 6px 0;
-  background: none; border: none; cursor: pointer;
-  color: var(--text-light); font-size: 11px; font-family: inherit;
-  transition: color 0.2s;
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 3px; padding: 6px 0; background: none; border: none; cursor: pointer;
+  color: var(--text-light); font-size: 11px; font-family: inherit; transition: color 0.2s;
 }
 .nav-btn .nav-icon { font-size: 22px; transition: transform 0.2s; }
 .nav-btn.active { color: var(--accent1); }
 .nav-btn.active .nav-icon { transform: scale(1.15); }
-
-
-
-@media (min-width: 768px) {
-  /* tablet/desktop still uses the single-scroll-container model:
-     body stays fixed to viewport height; .app-shell is the one scrollable region.
-     (previously body was set to overflow:auto here, which risked a redundant
-     outer scrollbar appearing alongside .app-shell's own scroll) */
-  body { overflow: hidden; height: 100%; height: 100dvh; }
-  html { height: 100%; }
-}
-/* hide nav-brand on mobile */
 .nav-brand { display: none; }
-@media (min-width: 768px) { .nav-brand { display: flex; } }
-/* ── TABLET (768px – 1023px) ── */
+
+/* ── TABLET ── */
 @media (min-width: 768px) {
-  #welcome-screen { padding: 60px 48px; }
-  .welcome-inner { max-width: 480px; }
-  .welcome-title { font-size: 32px; }
-  .welcome-sub { font-size: 16px; }
-
-  #app {
-    flex-direction: row;
-    max-width: 900px;
-    margin: 0 auto;
-    height: 100%; height: 100dvh;
-    align-items: stretch;
-  }
-
-  /* Side nav replaces bottom nav */
+  #app { flex-direction: row; max-width: 900px; margin: 0 auto; height: 100%; height: 100dvh; align-items: stretch; }
   .bottom-nav {
-    position: sticky; top: 0;
-    left: 0; right: auto; bottom: auto;
-    width: 200px; height: 100vh; height: 100dvh;
-    flex-direction: column;
+    position: sticky; top: 0; left: 0; right: auto; bottom: auto;
+    width: 200px; height: 100vh; height: 100dvh; flex-direction: column;
     border-top: none; border-right: 1.5px solid var(--border);
-    padding: 32px 0 24px;
-    padding-bottom: max(24px, env(safe-area-inset-bottom));
-    justify-content: flex-start;
-    gap: 4px;
-    align-items: stretch;
-    flex-shrink: 0;
+    padding: 32px 0 max(24px, env(safe-area-inset-bottom));
+    justify-content: flex-start; gap: 4px; align-items: stretch; flex-shrink: 0;
   }
-  .nav-btn {
-    flex-direction: row; justify-content: flex-start;
-    gap: 12px; padding: 13px 24px;
-    font-size: 14px; border-radius: 12px;
-    margin: 0 12px;
-  }
+  .nav-btn { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 13px 24px; font-size: 14px; border-radius: 12px; margin: 0 12px; }
   .nav-btn .nav-icon { font-size: 20px; }
   .nav-btn.active { background: var(--surface2); }
   .nav-btn.active .nav-icon { transform: none; }
-
-  /* Nav header */
-  .nav-brand {
-    display: flex; flex-direction: column;
-    padding: 0 24px 24px;
-    border-bottom: 1.5px solid var(--border);
-    margin-bottom: 12px;
-  }
-  .nav-brand-title { font-size: 16px; font-weight: 500; color: var(--text-main); }
+  .nav-brand { display: flex; flex-direction: column; padding: 0 24px 24px; border-bottom: 1.5px solid var(--border); margin-bottom: 12px; }
+  .nav-brand-title { font-size: 16px; font-weight: 500; }
   .nav-brand-sub { font-size: 12px; color: var(--text-light); margin-top: 3px; }
-
   .app-shell { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
   .top-bar { padding: 28px 36px 10px; }
   .top-greeting { font-size: 20px; }
-
   .tab-content { padding: 16px 36px 40px; }
-  /* cards should not stretch to fill height on tablet/desktop */
   .card { align-self: start; }
   .notes-wall { grid-template-columns: 1fr 1fr 1fr; }
   .mood-options { grid-template-columns: 1fr 1fr 1fr; }
-  /* badges: single col centred */
-  .tab-pane#tab-badges { max-width: 600px; margin: 0 auto; }
 }
-
-/* ── DESKTOP (≥ 1024px) ── */
+/* ── DESKTOP ── */
 @media (min-width: 1024px) {
-  #app {
-    max-width: 1200px;
-  }
-
-  .bottom-nav {
-    width: 220px;
-    padding: 36px 0 28px;
-  }
+  #app { max-width: 1200px; }
+  .bottom-nav { width: 220px; padding: 36px 0 max(28px, env(safe-area-inset-bottom)); }
   .nav-btn { padding: 14px 28px; font-size: 15px; }
   .nav-brand { padding: 0 28px 28px; }
   .nav-brand-title { font-size: 17px; }
-
   .top-bar { padding: 36px 48px 12px; }
   .top-greeting { font-size: 22px; }
   .top-date { font-size: 14px; }
-
   .tab-content { padding: 20px 48px 48px; }
-
-  /* Two-column content layout for PC */
-  .tab-pane#tab-today {
-    display: none;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: start;
-  }
+  .tab-pane#tab-today { display: none; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
   .tab-pane#tab-today.active { display: grid; }
   .tab-pane#tab-today .card:first-child { grid-column: 1 / -1; }
-
-  .tab-pane#tab-badges {
-    display: none;
-    max-width: 600px;
-    margin: 0 auto;
-    width: 100%;
-  }
-  .tab-pane#tab-badges.active { display: block; }
-
   .notes-wall { grid-template-columns: 1fr 1fr 1fr; }
-
   .checkin-btn { width: 140px; height: 140px; font-size: 56px; }
   .quote-text { font-size: 19px; }
-  .flip-back-text { font-size: 17px; }
-
-  .cal-day-detail { max-height: 400px; }
 }
 
 /* ── CARD ── */
 .card {
-  background: var(--surface);
-  border-radius: 20px;
-  border: 1.5px solid var(--border);
-  padding: 24px; margin-bottom: 16px;
-  box-shadow: var(--shadow-card);
+  background: var(--surface); border-radius: 20px; border: 1.5px solid var(--border);
+  padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow-card);
   transition: background 0.4s, border-color 0.4s;
 }
 .card-title { font-size: 13px; color: var(--text-sub); letter-spacing: 0.05em; margin-bottom: 16px; text-transform: uppercase; }
@@ -290,425 +169,218 @@ body {
 /* ── CHECKIN ── */
 .checkin-area { display: flex; flex-direction: column; align-items: center; padding: 12px 0 4px; }
 .checkin-btn {
-  width: 120px; height: 120px; border-radius: 50%;
-  border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 48px; position: relative; overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  width: 120px; height: 120px; border-radius: 50%; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 48px;
+  position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
 }
 .checkin-btn.idle { background: var(--checkin-idle); box-shadow: 0 4px 20px var(--checkin-idle-shadow); }
 .checkin-btn.done { background: var(--checkin-done); box-shadow: 0 4px 20px var(--checkin-done-shadow); }
 .checkin-btn:active { transform: scale(0.93); }
-.checkin-ripple {
-  position: absolute; border-radius: 50%;
-  background: rgba(255,255,255,0.4);
-  animation: ripple 0.6s ease-out forwards;
-  pointer-events: none;
-}
-@keyframes ripple {
-  from { width:0;height:0;opacity:1;transform:translate(-50%,-50%) scale(0); }
-  to { width:200px;height:200px;opacity:0;transform:translate(-50%,-50%) scale(1); }
-}
-.checkin-label {
-  margin-top: 16px; font-size: 15px; color: var(--text-sub);
-  text-align: center; line-height: 1.7; min-height: 52px;
-  transition: opacity 0.4s;
-}
-.checkin-feedback {
-  font-size: 14px; color: var(--accent2); text-align: center;
-  line-height: 1.7; margin-top: 10px; min-height: 0;
-  transition: opacity 0.4s;
-}
+.checkin-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.4); animation: ripple 0.6s ease-out forwards; pointer-events: none; }
+@keyframes ripple { from{width:0;height:0;opacity:1;transform:translate(-50%,-50%) scale(0)} to{width:200px;height:200px;opacity:0;transform:translate(-50%,-50%) scale(1)} }
+.checkin-label { margin-top: 16px; font-size: 15px; color: var(--text-sub); text-align: center; line-height: 1.7; min-height: 52px; }
+.checkin-feedback { font-size: 14px; color: var(--accent2); text-align: center; line-height: 1.7; margin-top: 10px; }
 
 /* ── QUOTE ── */
 .quote-area { text-align: center; }
-.quote-text {
-  font-size: 17px; line-height: 2; color: var(--text-main);
-  font-weight: 300; min-height: 80px; transition: opacity 0.4s;
-}
+.quote-text { font-size: 17px; line-height: 2; color: var(--text-main); font-weight: 300; min-height: 80px; transition: opacity 0.4s; }
 .quote-source { font-size: 12px; color: var(--text-light); margin-top: 10px; transition: opacity 0.4s; }
-.quote-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
-.quote-btn {
-  padding: 8px 20px; border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: var(--surface); font-size: 13px; font-family: inherit;
-  color: var(--text-sub); cursor: pointer; transition: all 0.2s;
-}
+.quote-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.quote-btn { padding: 8px 20px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 13px; font-family: inherit; color: var(--text-sub); cursor: pointer; transition: all 0.2s; }
 .quote-btn:hover { border-color: var(--accent1); color: var(--accent1); }
 .quote-btn.saved { background: var(--surface2); border-color: var(--accent1); color: var(--accent1); }
 
-/* ── MOOD SELECT ── */
-.mood-select-area { display: flex; flex-direction: column; gap: 12px; }
-.mood-question { font-size: 15px; color: var(--text-sub); margin-bottom: 4px; line-height: 1.7; }
+/* ── MOOD ── */
+.mood-question { font-size: 15px; color: var(--text-sub); margin-bottom: 12px; line-height: 1.7; }
 .mood-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; }
-.mood-btn {
-  padding: 12px 6px; border-radius: 14px;
-  border: 1.5px solid var(--border);
-  background: var(--surface2); font-size: 13px; font-family: inherit;
-  color: var(--text-main); cursor: pointer; transition: all 0.2s;
-  text-align: center; line-height: 1.5;
-}
+.mood-btn { padding: 12px 6px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--surface2); font-size: 13px; font-family: inherit; color: var(--text-main); cursor: pointer; transition: all 0.2s; text-align: center; line-height: 1.5; }
 .mood-btn:hover { border-color: var(--accent1); }
-.mood-btn.selected { border-color: var(--accent3); background: var(--flip-back); color: var(--text-main); }
-
-/* ── RESPONSE CARD ── */
-.response-card {
-  margin-top: 16px; padding: 22px 20px;
-  background: var(--flip-back);
-  border: 1.5px solid var(--flip-back-border);
-  border-radius: 16px; text-align: center;
-  animation: fadeIn 0.4s ease;
-}
+.mood-btn.selected { border-color: var(--accent3); background: var(--flip-back); }
+.response-card { margin-top: 16px; padding: 22px 20px; background: var(--flip-back); border: 1.5px solid var(--flip-back-border); border-radius: 16px; text-align: center; animation: fadeIn 0.4s ease; }
 .response-text { font-size: 16px; line-height: 1.9; color: var(--text-main); font-weight: 300; }
 .response-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
-.response-btn {
-  padding: 8px 18px; border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: var(--surface); font-size: 13px; font-family: inherit;
-  color: var(--text-sub); cursor: pointer; transition: all 0.2s;
-}
+.response-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 13px; font-family: inherit; color: var(--text-sub); cursor: pointer; transition: all 0.2s; }
 .response-btn:hover { border-color: var(--accent2); color: var(--accent2); }
 .response-btn.saved { border-color: var(--accent3); color: var(--accent3); }
 
-/* ── BADGES ── */
-.task-section-label {
-  font-size: 12px; color: var(--text-light); letter-spacing: 0.08em;
-  text-transform: uppercase; margin: 18px 0 10px; padding-left: 2px;
-}
-.task-section-label:first-child { margin-top: 0; }
-.task-list { display: flex; flex-direction: column; gap: 10px; }
-.task-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 16px;
-  background: var(--surface2); border-radius: 12px;
-  border: 1.5px solid transparent;
-  cursor: pointer; transition: all 0.2s; user-select: none;
-}
-.task-item.checked { background: var(--flip-back); border-color: var(--accent2); }
-.task-check {
-  width: 24px; height: 24px; border-radius: 50%;
-  border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; flex-shrink: 0; transition: all 0.2s;
-}
-.task-item.checked .task-check { background: var(--accent2); border-color: var(--accent2); color: white; }
-.task-label { font-size: 15px; line-height: 1.4; flex: 1; }
-.task-streak { font-size: 12px; color: var(--accent1); flex-shrink: 0; }
-.badge-encourage {
-  font-size: 14px; color: var(--text-sub); line-height: 1.9;
-  text-align: center; padding: 18px 8px 4px;
-}
-.badge-collection-btn {
-  width: 100%; padding: 15px;
-  background: var(--surface2);
-  border: 1.5px solid var(--border);
-  border-radius: 14px; font-size: 15px; color: var(--accent3);
-  font-family: inherit; cursor: pointer; transition: all 0.2s;
-  margin-bottom: 4px; display: flex; align-items: center;
-  justify-content: center; gap: 8px;
-}
-.badge-collection-btn:active { transform: scale(0.97); }
-
-/* ── OVERLAYS ── */
-.overlay {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(4px);
-  display: flex; align-items: flex-end;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.overlay.open { opacity: 1; pointer-events: all; }
-.overlay-sheet {
-  width: 100%; max-width: 480px; margin: 0 auto;
-  background: var(--surface); border-radius: 24px 24px 0 0;
-  padding: 28px 24px calc(48px + env(safe-area-inset-bottom));
-  max-height: 80vh; overflow-y: auto;
-  transform: translateY(20px); transition: transform 0.3s, background 0.4s;
-}
-.overlay.open .overlay-sheet { transform: translateY(0); }
-.overlay-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
-.overlay-title { font-size: 17px; font-weight: 500; }
-.overlay-sub { font-size: 13px; color: var(--text-sub); margin-bottom: 20px; line-height: 1.8; }
-.overlay-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); padding: 0; }
-
-.badge-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 8px; }
-.badge-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: transform 0.15s; }
-.badge-item:active { transform: scale(0.9); }
-.badge-icon-wrap {
-  width: 58px; height: 58px; border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px; transition: all 0.2s;
-}
-.badge-item.unlocked .badge-icon-wrap { background: var(--surface2); border: 1.5px solid var(--border); }
-.badge-item.locked .badge-icon-wrap { background: var(--surface2); border: 1.5px solid var(--border); filter: grayscale(1) opacity(0.3); }
-.badge-name { font-size: 11px; color: var(--text-sub); text-align: center; line-height: 1.3; }
-.badge-count { font-size: 10px; color: var(--accent1); }
-
-/* badge detail */
-.badge-detail-overlay {
-  position: fixed; inset: 0; z-index: 600;
-  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 32px;
-}
-.badge-detail-overlay.open { opacity: 1; pointer-events: all; }
-.badge-detail-card {
-  background: var(--surface); border-radius: 20px;
-  padding: 40px 32px; text-align: center;
-  max-width: 300px; width: 100%;
-  transform: scale(0.9); transition: transform 0.3s, background 0.4s;
-}
-.badge-detail-overlay.open .badge-detail-card { transform: scale(1); }
-.badge-detail-icon { margin-bottom: 16px; font-size: 64px; }
-.badge-detail-name { font-size: 20px; font-weight: 500; margin-bottom: 8px; }
-.badge-detail-desc { font-size: 14px; color: var(--text-sub); line-height: 1.9; margin-bottom: 8px; }
-.badge-detail-progress { font-size: 13px; color: var(--accent1); margin-bottom: 24px; }
-.badge-detail-close {
-  padding: 12px 32px; border-radius: 20px;
-  border: 1.5px solid var(--border); background: none;
-  font-size: 14px; font-family: inherit; cursor: pointer;
-  color: var(--text-sub); transition: all 0.2s;
-}
-.badge-detail-close:hover { border-color: var(--accent1); color: var(--accent1); }
-
-/* ── DIARY ── */
-.diary-add-btn {
-  width: 100%; padding: 16px;
-  background: var(--surface2);
-  border: 2px dashed var(--border); border-radius: 12px;
-  font-size: 15px; color: var(--text-sub);
-  font-family: inherit; cursor: pointer; transition: all 0.2s;
-  margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.diary-add-btn:hover { border-color: var(--accent1); color: var(--accent1); }
-.diary-hint {
-  font-size: 13px; color: var(--text-light); line-height: 1.8;
-  text-align: center; padding: 4px 12px 14px;
-}
-.diary-toolbar { display: flex; gap: 8px; margin-bottom: 16px; }
-.diary-search {
-  flex: 1; padding: 10px 14px;
-  border: 1.5px solid var(--border); border-radius: 20px;
-  background: var(--surface); font-size: 13px; font-family: inherit;
+/* ── TODAY TASK ── */
+.todotask-input-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.todotask-input {
+  flex: 1; padding: 13px 16px; border: 1.5px solid var(--border); border-radius: 12px;
+  background: var(--surface); font-size: 15px; font-family: inherit;
   color: var(--text-main); outline: none; transition: border-color 0.2s, background 0.4s;
 }
-.diary-search:focus { border-color: var(--accent1); }
-.diary-search::placeholder { color: var(--text-light); }
-.diary-filter-btn {
-  flex-shrink: 0; padding: 10px 16px;
-  border: 1.5px solid var(--border); border-radius: 20px;
-  background: var(--surface2); font-size: 13px; font-family: inherit;
+.todotask-input:focus { border-color: var(--accent1); }
+.todotask-set-btn {
+  padding: 13px 18px; border-radius: 12px; border: none;
+  background: linear-gradient(135deg,var(--accent1),#d4897a);
+  color: white; font-size: 14px; font-family: inherit; cursor: pointer; flex-shrink: 0;
+}
+.todotask-display {
+  padding: 20px; background: var(--surface2); border-radius: 16px;
+  border: 1.5px solid var(--border); display: flex; align-items: center; gap: 16px;
+  cursor: pointer; transition: all 0.2s; user-select: none;
+}
+.todotask-display.done { background: var(--flip-back); border-color: var(--accent2); }
+.todotask-circle {
+  width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 16px; transition: all 0.2s;
+}
+.todotask-display.done .todotask-circle { background: var(--accent2); border-color: var(--accent2); color: white; }
+.todotask-text { font-size: 16px; line-height: 1.6; flex: 1; }
+.todotask-display.done .todotask-text { text-decoration: line-through; color: var(--text-sub); }
+.todotask-done-msg { margin-top: 14px; font-size: 14px; color: var(--accent2); text-align: center; line-height: 1.8; animation: fadeIn 0.4s ease; }
+.todotask-empty { font-size: 14px; color: var(--text-light); text-align: center; padding: 20px 0 4px; line-height: 1.9; }
+.todotask-hint { font-size: 13px; color: var(--text-light); text-align: center; margin-top: 16px; line-height: 1.8; }
+
+/* ── TIMER ── */
+.timer-area { display: flex; flex-direction: column; align-items: center; padding: 8px 0 16px; }
+.timer-svg-wrap { position: relative; width: 200px; height: 200px; margin-bottom: 20px; }
+.timer-svg { transform: rotate(-90deg); }
+.timer-track { fill: none; stroke: var(--timer-track); stroke-width: 8; }
+.timer-fill { fill: none; stroke: var(--timer-fill); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+.timer-label {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.timer-time { font-size: 36px; font-weight: 300; color: var(--text-main); letter-spacing: 0.02em; }
+.timer-subtext { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+.timer-quote { font-size: 15px; color: var(--text-sub); text-align: center; line-height: 1.9; min-height: 52px; margin-bottom: 20px; font-weight: 300; padding: 0 8px; }
+.timer-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+.timer-btn {
+  padding: 10px 22px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--surface2); font-size: 14px; font-family: inherit;
   color: var(--text-sub); cursor: pointer; transition: all 0.2s;
 }
+.timer-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+.timer-btn.primary { background: linear-gradient(135deg,var(--accent1),#d4897a); color: white; border-color: transparent; }
+.timer-btn.primary:hover { opacity: 0.9; border-color: transparent; color: white; }
+.timer-preset-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+.timer-preset-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 13px; font-family: inherit; color: var(--text-sub); cursor: pointer; transition: all 0.2s; }
+.timer-preset-btn:hover, .timer-preset-btn.active { border-color: var(--accent1); color: var(--accent1); }
+.timer-custom-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+.timer-custom-label { font-size: 13px; color: var(--text-sub); }
+.timer-custom-input {
+  width: 64px; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 10px;
+  background: var(--surface); font-size: 15px; font-family: inherit;
+  color: var(--text-main); outline: none; text-align: center;
+  transition: border-color 0.2s, background 0.4s;
+}
+.timer-custom-input:focus { border-color: var(--accent1); }
+.timer-done-overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px;
+  animation: fadeIn 0.5s ease; pointer-events: none;
+}
+.timer-done-icon { font-size: 48px; }
+.timer-done-text { font-size: 15px; color: var(--accent2); font-weight: 500; }
+
+/* ── DIARY ── */
+.diary-hint { font-size: 13px; color: var(--text-light); line-height: 1.8; text-align: center; padding: 4px 12px 14px; }
+.diary-add-btn {
+  width: 100%; padding: 16px; background: var(--surface2);
+  border: 2px dashed var(--border); border-radius: 12px; font-size: 15px;
+  color: var(--text-sub); font-family: inherit; cursor: pointer;
+  transition: all 0.2s; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.diary-add-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+.diary-toolbar { display: flex; gap: 8px; margin-bottom: 16px; }
+.diary-search { flex: 1; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 20px; background: var(--surface); font-size: 13px; font-family: inherit; color: var(--text-main); outline: none; transition: border-color 0.2s, background 0.4s; }
+.diary-search:focus { border-color: var(--accent1); }
+.diary-search::placeholder { color: var(--text-light); }
+.diary-filter-btn { flex-shrink: 0; padding: 10px 16px; border: 1.5px solid var(--border); border-radius: 20px; background: var(--surface2); font-size: 13px; font-family: inherit; color: var(--text-sub); cursor: pointer; transition: all 0.2s; }
 .diary-filter-btn.active { border-color: var(--star); color: var(--star); background: var(--surface); }
-.note-time { font-size: 10px; color: var(--text-light); margin-left: 6px; }
 .notes-wall { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px; padding-top: 6px; min-height: 80px; }
 .note-card {
-  background: var(--surface); border-radius: 4px 4px 10px 10px;
-  border: 1.5px solid var(--border); padding: 20px 14px 16px;
-  box-shadow: var(--shadow-card); position: relative;
-  animation: fadeIn 0.3s ease; cursor: pointer;
-  transform: rotate(var(--tilt, 0deg));
+  background: var(--surface); border-radius: 4px 4px 10px 10px; border: 1.5px solid var(--border);
+  padding: 20px 14px 16px; box-shadow: var(--shadow-card); position: relative;
+  animation: fadeIn 0.3s ease; cursor: pointer; transform: rotate(var(--tilt,0deg));
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.4s;
 }
 .note-card::before {
-  content: '';
-  position: absolute; top: -7px; left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
-  width: 38px; height: 14px;
-  background: var(--accent4);
-  opacity: 0.55;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  content: ''; position: absolute; top: -7px; left: 50%;
+  transform: translateX(-50%) rotate(-2deg); width: 38px; height: 14px;
+  background: var(--accent4); opacity: 0.55; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 .note-card:nth-child(3n+1)::before { background: var(--accent1); transform: translateX(-50%) rotate(-3deg); }
 .note-card:nth-child(3n+2)::before { background: var(--accent2); transform: translateX(-50%) rotate(2deg); }
 .note-card:nth-child(3n)::before { background: var(--accent3); transform: translateX(-50%) rotate(-1deg); }
-.note-card:active {
-  transform: rotate(var(--tilt, 0deg)) scale(0.96);
-  box-shadow: 0 1px 4px rgba(180,130,100,0.08);
-}
+.note-card:active { transform: rotate(var(--tilt,0deg)) scale(0.96); box-shadow: 0 1px 4px rgba(180,130,100,0.08); }
 .note-card.starred { border-color: var(--star); background: var(--surface2); }
 .note-card.starred::before { background: var(--star); opacity: 0.7; }
 .note-date { font-size: 11px; color: var(--text-light); margin-bottom: 8px; }
-.note-text {
-  font-size: 14px; line-height: 1.7; color: var(--text-main);
-  word-break: break-all;
-  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
-}
+.note-time { font-size: 10px; color: var(--text-light); margin-left: 6px; }
+.note-text { font-size: 14px; line-height: 1.7; color: var(--text-main); word-break: break-all; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .note-star { position: absolute; top: 10px; right: 10px; font-size: 16px; color: var(--star); cursor: pointer; opacity: 0.35; transition: opacity 0.2s; }
 .note-card.starred .note-star { opacity: 1; }
 
-/* note modal */
-.note-modal {
-  position: fixed; inset: 0; z-index: 550;
-  background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
-  display: flex; align-items: flex-end;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
+/* ── NOTE MODAL ── */
+.note-modal { position: fixed; inset: 0; z-index: 550; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .note-modal.open { opacity: 1; pointer-events: all; }
-.note-modal-inner {
-  width: 100%; max-width: 480px; margin: 0 auto;
-  background: var(--surface); border-radius: 24px 24px 0 0;
-  padding: 24px 24px calc(40px + env(safe-area-inset-bottom));
-  max-height: 85vh; overflow-y: auto;
-  transform: translateY(20px); transition: transform 0.3s, background 0.4s;
-}
+.note-modal-inner { width: 100%; max-width: 480px; margin: 0 auto; background: var(--surface); border-radius: 24px 24px 0 0; padding: 24px 24px calc(40px + env(safe-area-inset-bottom)); max-height: 85vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s, background 0.4s; }
 .note-modal.open .note-modal-inner { transform: translateY(0); }
 .note-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .note-modal-title { font-size: 15px; color: var(--text-sub); }
 .note-modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); }
-.note-textarea {
-  width: 100%; min-height: 140px;
-  border: 1.5px solid var(--border); border-radius: 12px;
-  padding: 14px 16px; font-size: 15px; line-height: 1.8;
-  font-family: inherit; color: var(--text-main);
-  background: var(--bg); resize: none; outline: none; transition: border-color 0.2s, background 0.4s;
-}
+.note-textarea { width: 100%; min-height: 140px; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 15px; line-height: 1.8; font-family: inherit; color: var(--text-main); background: var(--bg); resize: none; outline: none; transition: border-color 0.2s, background 0.4s; }
 .note-textarea:focus { border-color: var(--accent1); }
 .note-modal-actions { display: flex; gap: 10px; margin-top: 14px; }
-.note-save-btn {
-  flex: 1; padding: 13px;
-  background: linear-gradient(135deg,var(--accent1),#d4897a);
-  color: white; border: none; border-radius: 12px;
-  font-size: 15px; font-family: inherit; cursor: pointer;
-}
+.note-save-btn { flex: 1; padding: 13px; background: linear-gradient(135deg,var(--accent1),#d4897a); color: white; border: none; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; }
 .note-save-btn:active { opacity: 0.85; }
-.note-delete-btn {
-  padding: 13px 18px; background: none;
-  border: 1.5px solid var(--border); border-radius: 12px;
-  color: var(--text-sub); font-size: 15px; font-family: inherit; cursor: pointer;
-}
-
-/* ── CALENDAR ── */
-.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.cal-nav { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-sub); padding: 4px 8px; }
-.cal-month { font-size: 17px; font-weight: 500; }
-.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
-.cal-weekday { text-align: center; font-size: 12px; color: var(--text-light); padding: 4px 0 8px; }
-.cal-day {
-  aspect-ratio: 1; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; color: var(--text-sub); cursor: pointer;
-  transition: all 0.15s; position: relative;
-}
-.cal-day.other-month { opacity: 0.3; }
-.cal-day.today { font-weight: 600; color: var(--accent1); }
-.cal-day.checked-in::after { content:''; position:absolute; bottom:2px; width:4px; height:4px; border-radius:50%; background:var(--accent2); }
-.cal-day.has-note::before { content:''; position:absolute; top:2px; width:4px; height:4px; border-radius:50%; background:var(--accent1); }
-.cal-day .note-count {
-  position: absolute; top: -2px; right: -2px;
-  font-size: 9px; background: var(--accent1); color: white;
-  border-radius: 8px; min-width: 13px; height: 13px;
-  display: flex; align-items: center; justify-content: center;
-  line-height: 1; padding: 0 2px;
-}
-.cal-day.selected { background: var(--accent1); color: white; }
-.cal-day.selected::after, .cal-day.selected::before { background: white; opacity: 0.8; }
-.cal-day-detail {
-  margin-top: 16px; padding: 16px; background: var(--surface2);
-  border-radius: 12px; min-height: 60px;
-  transition: opacity 0.3s, background 0.4s;
-  max-height: 320px; overflow-y: auto;
-}
-.cal-day-detail-title { font-size: 13px; color: var(--text-sub); margin-bottom: 10px; }
-.cal-detail-item {
-  font-size: 14px; color: var(--text-main); line-height: 1.7;
-  padding: 10px 14px; background: var(--surface); border-radius: 10px;
-  margin-bottom: 8px; border: 1.5px solid var(--border);
-  cursor: pointer; transition: background 0.2s;
-}
-.cal-detail-item .item-text {
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-  overflow: hidden; word-break: break-all;
-}
-.cal-detail-item.expanded .item-text { display: block; -webkit-line-clamp: unset; }
-.cal-detail-item .expand-hint {
-  font-size: 12px; color: var(--text-light); margin-top: 4px;
-}
-.cal-detail-item.expanded .expand-hint { display: none; }
-.cal-detail-item.saved-quote { border-color: var(--accent3); }
-.cal-detail-item.saved-card { border-color: var(--accent2); }
-.cal-detail-empty { font-size: 14px; color: var(--text-light); text-align: center; padding: 12px 0; }
+.note-delete-btn { padding: 13px 18px; background: none; border: 1.5px solid var(--border); border-radius: 12px; color: var(--text-sub); font-size: 15px; font-family: inherit; cursor: pointer; }
 
 /* ── SETTINGS ── */
 .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1.5px solid var(--border); gap: 12px; }
 .setting-row:last-child { border-bottom: none; }
 .setting-label { font-size: 15px; }
 .setting-sub { font-size: 12px; color: var(--text-light); margin-top: 3px; }
-.setting-btn {
-  flex-shrink: 0; padding: 9px 18px; border-radius: 20px;
-  border: 1.5px solid var(--border); background: var(--surface2);
-  font-size: 13px; font-family: inherit; color: var(--text-sub); cursor: pointer; transition: all 0.2s;
-}
+.setting-btn { flex-shrink: 0; padding: 9px 18px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface2); font-size: 13px; font-family: inherit; color: var(--text-sub); cursor: pointer; transition: all 0.2s; }
 .setting-btn:hover { border-color: var(--accent1); color: var(--accent1); }
-.setting-input {
-  border: 1.5px solid var(--border); border-radius: 10px;
-  padding: 8px 14px; font-size: 14px; font-family: inherit;
-  color: var(--text-main); background: var(--surface); outline: none;
-  width: 130px; flex-shrink: 0; transition: border-color 0.2s, background 0.4s;
-}
+.setting-input { border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 14px; font-size: 14px; font-family: inherit; color: var(--text-main); background: var(--surface); outline: none; width: 130px; flex-shrink: 0; transition: border-color 0.2s, background 0.4s; }
 .setting-input:focus { border-color: var(--accent1); }
-.theme-toggle {
-  display: flex; gap: 8px; flex-shrink: 0;
-}
-.theme-btn {
-  padding: 8px 14px; border-radius: 20px;
-  border: 1.5px solid var(--border); background: var(--surface2);
-  font-size: 13px; font-family: inherit; cursor: pointer;
-  color: var(--text-sub); transition: all 0.2s;
-}
+.theme-toggle { display: flex; gap: 8px; flex-shrink: 0; }
+.theme-btn { padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface2); font-size: 13px; font-family: inherit; cursor: pointer; color: var(--text-sub); transition: all 0.2s; }
 .theme-btn.active { border-color: var(--accent1); color: var(--accent1); background: var(--surface); }
+/* custom quotes in settings */
+.custom-quote-add { display: flex; gap: 8px; margin-bottom: 12px; }
+.custom-quote-add input { flex: 1; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); font-size: 14px; font-family: inherit; color: var(--text-main); outline: none; transition: border-color 0.2s; }
+.custom-quote-add input:focus { border-color: var(--accent1); }
+.custom-quote-add button { flex-shrink: 0; padding: 10px 16px; border-radius: 10px; border: none; background: var(--accent1); color: white; font-size: 14px; font-family: inherit; cursor: pointer; }
+.custom-quote-list { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; }
+.custom-quote-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--surface2); border-radius: 10px; border: 1.5px solid var(--border); font-size: 14px; color: var(--text-main); line-height: 1.6; }
+.custom-quote-item span { flex: 1; }
+.custom-quote-del { background: none; border: none; font-size: 16px; color: var(--text-light); cursor: pointer; flex-shrink: 0; padding: 0; line-height: 1; }
+.custom-quote-empty { font-size: 13px; color: var(--text-light); text-align: center; padding: 12px 0; }
 .setting-about { font-size: 13px; color: var(--text-light); line-height: 1.9; text-align: center; padding: 20px 0 4px; }
 
-/* ── TOAST ── */
-.toast {
-  position: fixed;
-  bottom: calc(76px + env(safe-area-inset-bottom)); /* clears mobile bottom-nav + home indicator */
-  left: 50%; transform: translateX(-50%);
-  background: var(--text-main); color: var(--bg);
-  padding: 10px 22px; border-radius: 20px; font-size: 14px; z-index: 800;
-  opacity: 0; transition: opacity 0.3s; white-space: nowrap; pointer-events: none;
-}
-@media (min-width: 768px) {
-  /* tablet/desktop: side nav, no bottom bar to clear */
-  .toast { bottom: 32px; }
-}
+/* ── OVERLAYS & UTILS ── */
+.toast { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); background: var(--text-main); color: var(--bg); padding: 10px 22px; border-radius: 20px; font-size: 14px; z-index: 800; opacity: 0; transition: opacity 0.3s; white-space: nowrap; pointer-events: none; }
+@media (min-width: 768px) { .toast { bottom: 32px; } }
 .toast.show { opacity: 1; }
-
-/* ── CONFETTI ── */
 .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 700; }
-.confetti-piece {
-  position: absolute; width: 8px; height: 8px; border-radius: 2px;
-  animation: confettiFall 1.3s ease-in forwards;
-}
-@keyframes confettiFall {
-  from { opacity:1; transform:translateY(-20px) rotate(0deg); }
-  to { opacity:0; transform:translateY(100vh) rotate(720deg); }
-}
-
-/* ── EMPTY ── */
+.confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confettiFall 1.3s ease-in forwards; }
+@keyframes confettiFall { from{opacity:1;transform:translateY(-20px) rotate(0deg)} to{opacity:0;transform:translateY(100vh) rotate(720deg)} }
 .empty-state { text-align: center; padding: 40px 20px; color: var(--text-light); font-size: 14px; line-height: 1.9; }
 .empty-state-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
 </style>
 </head>
 <body>
 
-<!-- WELCOME -->
 <div id="welcome-screen">
   <div class="welcome-inner">
-  <div class="welcome-illus">🌸</div>
-  <h1 class="welcome-title">你好，這裡是你的輕鏡</h1>
-  <p class="welcome-sub">一個只屬於你的小角落<br>不評分、不比較<br>只是陪你好好存在著</p>
-  <div class="welcome-input-wrap">
-    <label>你想讓我怎麼稱呼你？</label>
-    <input class="welcome-input" id="name-input" type="text" placeholder="你的名字或暱稱" maxlength="12">
-  </div>
-  <button class="welcome-btn" onclick="startApp()">進來吧 🌿</button>
+    <div class="welcome-illus">🌸</div>
+    <h1 class="welcome-title">你好，這裡是你的輕鏡</h1>
+    <p class="welcome-sub">一個只屬於你的小角落<br>不評分、不比較<br>只是陪你好好存在著</p>
+    <div class="welcome-input-wrap">
+      <label>你想讓我怎麼稱呼你？</label>
+      <input class="welcome-input" id="name-input" type="text" placeholder="你的名字或暱稱" maxlength="12">
+    </div>
+    <button class="welcome-btn" onclick="startApp()">進來吧 🌿</button>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app" style="display:none">
   <nav class="bottom-nav">
     <div class="nav-brand">
@@ -716,49 +388,47 @@ body {
       <div class="nav-brand-sub">你今天存在著</div>
     </div>
     <button class="nav-btn active" onclick="switchTab('today',this)"><span class="nav-icon">🌱</span>今天</button>
-    <button class="nav-btn" onclick="switchTab('badges',this)"><span class="nav-icon">✨</span>徽章</button>
-    <button class="nav-btn" onclick="switchTab('diary',this)"><span class="nav-icon">📓</span>日記</button>
-    <button class="nav-btn" onclick="switchTab('cal',this)"><span class="nav-icon">📅</span>日曆</button>
+    <button class="nav-btn" onclick="switchTab('task',this)"><span class="nav-icon">✅</span>今日事</button>
+    <button class="nav-btn" onclick="switchTab('timer',this)"><span class="nav-icon">⏱</span>放空</button>
+    <button class="nav-btn" onclick="switchTab('diary',this)"><span class="nav-icon">📓</span>便條</button>
     <button class="nav-btn" onclick="switchTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
   </nav>
+
   <div class="app-shell">
-  <div class="top-bar">
-    <div>
-      <div class="top-greeting" id="top-greeting">你好</div>
-      <div class="top-date" id="top-date"></div>
-    </div>
-    <div class="streak-badge" id="streak-badge">🌱 0 天</div>
-  </div>
-
-  <div class="tab-content">
-
-    <!-- TODAY -->
-    <div class="tab-pane active" id="tab-today">
-      <div class="card">
-        <div class="card-title">今天的你</div>
-        <div class="checkin-area">
-          <button class="checkin-btn idle" id="checkin-btn" onclick="doCheckin(event)">🌙</button>
-          <div class="checkin-label" id="checkin-label">點一下，告訴這一天你在這裡</div>
-          <div class="checkin-feedback" id="checkin-feedback"></div>
-        </div>
+    <div class="top-bar">
+      <div>
+        <div class="top-greeting" id="top-greeting">你好</div>
+        <div class="top-date" id="top-date"></div>
       </div>
+      <div class="streak-badge" id="streak-badge">🌱 0 天</div>
+    </div>
 
-      <div class="card">
-        <div class="card-title">今日引言</div>
-        <div class="quote-area">
-          <div class="quote-text" id="quote-text"></div>
-          <div class="quote-source" id="quote-source"></div>
-          <div class="quote-actions">
-            <button class="quote-btn" onclick="nextQuote(true)">換一句</button>
-            <button class="quote-btn" id="quote-save-btn" onclick="saveQuote()">收藏這句</button>
+    <div class="tab-content">
+
+      <!-- TODAY -->
+      <div class="tab-pane active" id="tab-today">
+        <div class="card">
+          <div class="card-title">今天的你</div>
+          <div class="checkin-area">
+            <button class="checkin-btn idle" id="checkin-btn" onclick="doCheckin(event)">🌙</button>
+            <div class="checkin-label" id="checkin-label">點一下，告訴這一天你在這裡</div>
+            <div class="checkin-feedback" id="checkin-feedback"></div>
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">今天的心情</div>
-        <div class="mood-select-area">
-          <div class="mood-question">此刻的你，比較像哪一種？</div>
+        <div class="card">
+          <div class="card-title">今日引言</div>
+          <div class="quote-area">
+            <div class="quote-text" id="quote-text"></div>
+            <div class="quote-source" id="quote-source"></div>
+            <div class="quote-actions">
+              <button class="quote-btn" onclick="nextQuote(true)">換一句</button>
+              <button class="quote-btn" id="quote-save-btn" onclick="saveQuote()">收藏這句</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">此刻的心情</div>
+          <div class="mood-question">比較像哪一種？</div>
           <div class="mood-options">
             <button class="mood-btn" onclick="selectMood('calm','平靜 🍵')">平靜 🍵</button>
             <button class="mood-btn" onclick="selectMood('happy','開心 🌻')">開心 🌻</button>
@@ -773,120 +443,113 @@ body {
           <div id="mood-response"></div>
         </div>
       </div>
-    </div>
 
-    <!-- BADGES -->
-    <div class="tab-pane" id="tab-badges">
-      <div class="card">
-        <div class="card-title">今天做到的小事</div>
-        <div id="task-list-wrap"></div>
-        <div class="badge-encourage">
-          無論今天做到多少，都已經很好了。<br>你存在著，就已經是今天最重要的事。
+      <!-- TODAY TASK -->
+      <div class="tab-pane" id="tab-task">
+        <div class="card">
+          <div class="card-title">今日一件事</div>
+          <div id="todotask-area"></div>
         </div>
       </div>
-      <button class="badge-collection-btn" id="badge-collection-btn">
-        <span>✨</span><span>打開我的徽章收集冊</span>
-      </button>
-    </div>
 
-    <!-- DIARY -->
-    <div class="tab-pane" id="tab-diary">
-      <div class="diary-hint" id="diary-hint">便條會跟著你慢慢累積，不用急，想寫才寫。</div>
-      <button class="diary-add-btn" id="diary-add-btn" onclick="openNoteModal()">
-        <span>＋</span> 寫下今天想對自己說的話
-      </button>
-      <div class="diary-toolbar">
-        <input class="diary-search" id="diary-search" type="text" placeholder="搜尋便條內容..." oninput="renderNotes()">
-        <button class="diary-filter-btn" id="diary-filter-btn" onclick="toggleStarFilter()">★ 只看星號</button>
-      </div>
-      <div class="notes-wall" id="notes-wall"></div>
-    </div>
-
-    <!-- CALENDAR -->
-    <div class="tab-pane" id="tab-cal">
-      <div class="card">
-        <div class="cal-header">
-          <button class="cal-nav" onclick="calNav(-1)">‹</button>
-          <div class="cal-month" id="cal-month"></div>
-          <button class="cal-nav" onclick="calNav(1)">›</button>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-        <div class="cal-day-detail" id="cal-day-detail">
-          <div class="cal-detail-empty">選擇一天，看看那天的紀錄</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div class="tab-pane" id="tab-settings">
-      <div class="card">
-        <div class="setting-row">
-          <div><div class="setting-label">你的名字</div></div>
-          <input class="setting-input" id="name-setting" placeholder="暱稱" onchange="saveName(this.value)" maxlength="12">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-label">外觀主題</div></div>
-          <div class="theme-toggle">
-            <button class="theme-btn active" id="theme-light-btn" onclick="setTheme('light')">☀️ 亮色</button>
-            <button class="theme-btn" id="theme-dark-btn" onclick="setTheme('dark')">🌙 暗色</button>
+      <!-- TIMER -->
+      <div class="tab-pane" id="tab-timer">
+        <div class="card">
+          <div class="card-title">放空一下</div>
+          <div class="timer-area">
+            <div class="timer-svg-wrap">
+              <svg class="timer-svg" width="200" height="200" viewBox="0 0 200 200">
+                <circle class="timer-track" cx="100" cy="100" r="88"/>
+                <circle class="timer-fill" id="timer-fill" cx="100" cy="100" r="88"/>
+              </svg>
+              <div class="timer-label">
+                <div class="timer-time" id="timer-display">05:00</div>
+                <div class="timer-subtext" id="timer-subtext">選好時間再開始</div>
+              </div>
+            </div>
+            <div class="timer-quote" id="timer-quote"></div>
+            <div class="timer-preset-row">
+              <button class="timer-preset-btn" onclick="setTimerPreset(3)">3 分</button>
+              <button class="timer-preset-btn" onclick="setTimerPreset(5)">5 分</button>
+              <button class="timer-preset-btn" onclick="setTimerPreset(10)">10 分</button>
+              <button class="timer-preset-btn" onclick="setTimerPreset(15)">15 分</button>
+            </div>
+            <div class="timer-custom-row" style="margin-bottom:20px">
+              <span class="timer-custom-label">自訂</span>
+              <input class="timer-custom-input" id="timer-custom" type="number" min="1" max="60" value="5" onchange="setTimerCustom(this.value)">
+              <span class="timer-custom-label">分鐘</span>
+            </div>
+            <div class="timer-controls">
+              <button class="timer-btn primary" id="timer-start-btn" onclick="toggleTimer()">開始</button>
+              <button class="timer-btn" onclick="resetTimer()">重設</button>
+            </div>
           </div>
         </div>
-        <div class="setting-row">
-          <div><div class="setting-label">匯出我的資料</div><div class="setting-sub">下載 JSON 備份檔案</div></div>
-          <button class="setting-btn" onclick="exportData()">匯出</button>
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-label">匯入資料</div><div class="setting-sub">從備份檔案還原</div></div>
-          <button class="setting-btn" onclick="document.getElementById('import-input').click()">匯入</button>
-          <input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(event)">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-label">清除所有資料</div><div class="setting-sub">等同重新開始，無法復原</div></div>
-          <button class="setting-btn" style="color:#c4807a;border-color:#f0d4d4" onclick="clearData()">清除</button>
-        </div>
       </div>
-      <div class="setting-about">
-        輕鏡 · 你今天存在著<br>
-        所有資料都只存在你的裝置裡<br>
-        沒有帳號、沒有追蹤、只屬於你
-      </div>
-    </div>
-  </div>
 
+      <!-- DIARY -->
+      <div class="tab-pane" id="tab-diary">
+        <div class="diary-hint" id="diary-hint">便條會跟著你慢慢累積，不用急，想寫才寫。</div>
+        <button class="diary-add-btn" id="diary-add-btn" onclick="openNoteModal()">
+          <span>＋</span> 寫下此刻想說的話
+        </button>
+        <div class="diary-toolbar">
+          <input class="diary-search" id="diary-search" type="text" placeholder="搜尋便條..." oninput="renderNotes()">
+          <button class="diary-filter-btn" id="diary-filter-btn" onclick="toggleStarFilter()">★ 只看星號</button>
+        </div>
+        <div class="notes-wall" id="notes-wall"></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="tab-pane" id="tab-settings">
+        <div class="card">
+          <div class="setting-row">
+            <div><div class="setting-label">你的名字</div></div>
+            <input class="setting-input" id="name-setting" placeholder="暱稱" onchange="saveName(this.value)" maxlength="12">
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">外觀主題</div></div>
+            <div class="theme-toggle">
+              <button class="theme-btn active" id="theme-light-btn" onclick="setTheme('light')">☀️ 亮色</button>
+              <button class="theme-btn" id="theme-dark-btn" onclick="setTheme('dark')">🌙 暗色</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">匯出我的資料</div><div class="setting-sub">下載 JSON 備份</div></div>
+            <button class="setting-btn" onclick="exportData()">匯出</button>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">匯入資料</div><div class="setting-sub">從備份還原</div></div>
+            <button class="setting-btn" onclick="document.getElementById('import-input').click()">匯入</button>
+            <input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(event)">
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">清除所有資料</div><div class="setting-sub">等同重新開始，無法復原</div></div>
+            <button class="setting-btn" style="color:#c4807a;border-color:#f0d4d4" onclick="clearData()">清除</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">我的引言</div>
+          <div class="custom-quote-add">
+            <input id="custom-quote-input" type="text" placeholder="加入一句你喜歡的話…" maxlength="120">
+            <button onclick="addCustomQuote()">加入</button>
+          </div>
+          <div class="custom-quote-list" id="custom-quote-list"></div>
+        </div>
+        <div class="setting-about">輕鏡 · 你今天存在著<br>所有資料都只存在你的裝置裡</div>
+      </div>
+
+    </div><!-- /tab-content -->
   </div><!-- /app-shell -->
 </div>
 
-<!-- BADGE COLLECTION OVERLAY -->
-<div class="overlay" id="badge-overlay">
-  <div class="overlay-sheet">
-    <div class="overlay-header">
-      <div class="overlay-title">我的徽章收集冊</div>
-      <button class="overlay-close" id="badge-overlay-close">✕</button>
-    </div>
-    <div class="overlay-sub">每一個徽章，都是你真實存在過的痕跡。</div>
-    <div class="badge-grid" id="badge-grid"></div>
-  </div>
-</div>
-
-<!-- BADGE DETAIL -->
-<div class="badge-detail-overlay" id="badge-detail-overlay">
-  <div class="badge-detail-card">
-    <div class="badge-detail-icon" id="badge-detail-icon"></div>
-    <div class="badge-detail-name" id="badge-detail-name"></div>
-    <div class="badge-detail-desc" id="badge-detail-desc"></div>
-    <div class="badge-detail-progress" id="badge-detail-progress"></div>
-    <button class="badge-detail-close" id="badge-detail-close">回到收集冊</button>
-  </div>
-</div>
-
-<!-- NOTE MODAL -->
 <div class="note-modal" id="note-modal">
   <div class="note-modal-inner">
     <div class="note-modal-header">
       <div class="note-modal-title" id="note-modal-date"></div>
       <button class="note-modal-close" id="note-modal-close">✕</button>
     </div>
-    <textarea class="note-textarea" id="note-textarea" placeholder="寫下此刻想對自己說的話&#10;長或短、好或壞、都可以..." maxlength="300"></textarea>
+    <textarea class="note-textarea" id="note-textarea" placeholder="寫下此刻想對自己說的話…" maxlength="300"></textarea>
     <div class="note-modal-actions">
       <button class="note-save-btn" onclick="saveNote()">儲存</button>
       <button class="note-delete-btn" id="note-delete-btn" style="display:none" onclick="deleteNote()">刪除</button>
@@ -898,809 +561,499 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ── DATA ──
-
+// ── QUOTES ──
 const QUOTES = [
-  { text: "你不需要先變好，才值得被善待。", source: "卡爾·羅傑斯 改寫" },
-  { text: "存在本身，就已經是一種選擇與勇氣。", source: "沙特《存在與虛無》改寫" },
-  { text: "真正的自我接納，不是認輸，而是從那裡，改變才真正開始。", source: "卡爾·羅傑斯" },
-  { text: "你是你這一生相處最久的人，值得你認真對待。", source: "阿德勒心理學" },
-  { text: "允許自己不完美，是自由的起點。", source: "布琳·布朗《脆弱的力量》" },
-  { text: "內向不是缺陷，敏感不是弱點——它們是你感知世界的方式。", source: "蘇珊·坎恩《安靜，就是力量》" },
-  { text: "比較是快樂的竊賊。", source: "羅斯福" },
-  { text: "不完整不代表不完美，有時候空隙才是光進來的地方。", source: "李歐納·科恩" },
-  { text: "接受幫助，不是軟弱，是另一種形式的勇氣。", source: "布琳·布朗" },
-  { text: "你的情緒不是你的敵人，它們是提醒你某些事情很重要的訊號。", source: "ACT 接受與承諾療法" },
-  { text: "你過去的每一個決定，都是當時的你能做到的最好。", source: "自我慈悲理論，克里斯汀·聶夫" },
-  { text: "對自己好一點，就像你對一個你真心喜歡的朋友那樣。", source: "克里斯汀·聶夫《自我慈悲》" },
-  { text: "你的身體帶著你走過了所有你經歷的事，它值得你的謝意。", source: "身體正念觀點" },
-  { text: "情緒像天氣，你不是天氣，你是觀察天氣的那個人。", source: "正念減壓 MBSR 觀點" },
-  { text: "慢慢來，是另一種到達的方式。", source: "奧克塔維奧·帕斯 改寫" },
-  { text: "你不必解決所有的事，才能繼續往前走。", source: "敘事治療觀點" },
-  { text: "你有能力感受美好事物，這是一份不該被忽視的天賦。", source: "正向心理學" },
-  { text: "痛苦說明你還在感受，而感受，是生命力本身。", source: "維克多·法蘭可《活出意義來》改寫" },
-  { text: "你的故事還在寫，現在這一頁不是結局。", source: "敘事治療" },
-  { text: "勇氣不是沒有恐懼，而是帶著恐懼仍然向前。", source: "尼爾森·曼德拉" },
-  { text: "你現在所有『不夠好』的地方，曾幫你在某個困難時刻撐了下去。", source: "創傷知情觀點" },
-  { text: "你對他人的善意，也值得給回自己一份。", source: "慈悲心訓練 CFT" },
-  { text: "心理上的傷，需要時間，就像身體的傷一樣。請給自己那個時間。", source: "心理學觀點" },
-  { text: "所謂成長，不是消除軟弱，而是與軟弱和解。", source: "榮格分析心理學改寫" },
-  { text: "自我批評有時是在保護你，但它不需要那麼用力。", source: "自我慈悲理論" },
-  { text: "你的過去塑造了你，但不定義你的下一步。", source: "存在主義心理學" },
-  { text: "你內心的複雜，是你深度的一部分。", source: "榮格" },
-  { text: "你能夠對自己誠實，這需要的勇氣比你以為的多。", source: "存在主義" },
-  { text: "在乎別人的感受是善良，在乎自己的感受也是。", source: "界限理論" },
-  { text: "你的感受不需要被合理化，才能存在。", source: "情緒聚焦療法 EFT" },
-  { text: "有些事你只能慢慢來，這不叫失敗，叫真實。", source: "接受與承諾療法 ACT" },
-  { text: "你不是你的焦慮，你是那個正在面對焦慮的人。", source: "ACT 去融合技術" },
-  { text: "你可以帶著問題一起走，不必等到都解決了才出發。", source: "ACT" },
-  { text: "你的敏感是雷達，不是缺陷。", source: "高敏感族研究，伊蓮·艾融" },
-  { text: "靜下來感受自己，在這個時代，是一種稀有的能力。", source: "正念研究" },
-  { text: "你的身體，是你靈魂唯一的住所，值得被善待。", source: "存在現象學觀點" },
-  { text: "有時候，什麼都不做，只是坐著，也是一種照顧自己。", source: "正念觀點" },
-  { text: "你願意今天回來照顧自己，這已經是很重要的一步。", source: "習慣養成研究" },
-  { text: "你不必讓所有人都理解你，你只需要不排斥自己。", source: "個體化理論，榮格" },
-  { text: "你有一份想讓事情變好的心，這本身就是一種力量。", source: "正向心理學，馬丁·塞利格曼" },
-  { text: "你的價值，不在於你有多被需要，而在於你本身。", source: "內在客體關係理論" },
-  { text: "你曾承受的，不應該被低估。", source: "創傷療癒觀點" },
-  { text: "你有多少面向，就有多少種可能。", source: "多元自我理論" },
-  { text: "你今天的猶豫，往往來自認真，而不是懦弱。", source: "決策心理學觀點" },
-  { text: "你是你人生裡最長的陪伴，值得是個溫柔的陪伴。", source: "依附理論改寫" },
-  { text: "接納自己此刻的樣子，不是放棄，而是真正照顧的起點。", source: "卡爾·羅傑斯" },
-  { text: "你所有看不起自己的地方，曾幫你以某種方式活下來。", source: "創傷知情觀點" },
-  { text: "真正的平靜，不是沒有風浪，而是在風浪中仍能呼吸。", source: "斯多葛哲學" },
-  { text: "你今天能感受到任何事情，就代表你還在。這很重要。", source: "存在主義" },
-  { text: "你的故事值得被你自己溫柔地對待。", source: "敘事治療" },
-  { text: "你看見自己不足的眼光，也可以用來看見自己的好。", source: "正向心理學" },
-  { text: "你不必每天都很好。有些天，撐過去，就夠了。", source: "辯證行為治療 DBT" },
-  { text: "成為自己需要持續的勇氣，你每天都在這樣做。", source: "存在主義，齊克果改寫" },
-  { text: "你的情緒像海浪，你是海，不是浪。", source: "正念隱喻" },
-  { text: "你有能力感受他人的痛苦，請也把這份同理，給自己一點。", source: "自我慈悲" },
-  { text: "你今天對自己說了什麼，比別人對你說了什麼更重要。", source: "認知行為療法 CBT" },
-  { text: "你的疲憊是真實的，不需要假裝它不存在。", source: "情緒確認技術" },
-  { text: "你已經在做的事，比你意識到的多。", source: "正念" },
-  { text: "那些你以為的缺點，都是你曾努力生存的痕跡。", source: "創傷療癒" },
-  { text: "你對自己的期待可以高，但對自己的愛不應該有條件。", source: "自我慈悲理論" },
-  { text: "你值得佔據空間，你值得發出聲音。", source: "界限與自我主張研究" },
-  { text: "你能夠回頭照顧自己，就是你已經開始改變的證明。", source: "行為改變理論" },
-  { text: "現在這一頁，不會是你故事的最後一頁。", source: "敘事治療" },
-  { text: "你的安靜裡，有很多在流動的東西。", source: "榮格內傾型研究" },
-  { text: "你不必解釋自己為什麼傷心，傷心本身就已經足夠真實。", source: "情緒聚焦療法" },
-  { text: "你今天選擇繼續，就已經很了不起了。", source: "韌性研究" },
-  { text: "你值得擁有你給別人的那種耐心。", source: "自我慈悲" },
-  { text: "你的複雜不是問題，是你豐富的一部分。", source: "後現代心理學" },
-  { text: "有時迷失方向，不代表走錯，只是還沒找到路。", source: "存在主義" },
-  { text: "你今天選擇打開這裡，是你在照顧自己。", source: "輕鏡" },
+  {text:"你不需要先變好，才值得被善待。",source:"卡爾·羅傑斯 改寫"},
+  {text:"存在本身，就已經是一種選擇與勇氣。",source:"沙特《存在與虛無》改寫"},
+  {text:"真正的自我接納，不是認輸，而是從那裡，改變才真正開始。",source:"卡爾·羅傑斯"},
+  {text:"你是你這一生相處最久的人，值得你認真對待。",source:"阿德勒心理學"},
+  {text:"允許自己不完美，是自由的起點。",source:"布琳·布朗《脆弱的力量》"},
+  {text:"內向不是缺陷，敏感不是弱點——它們是你感知世界的方式。",source:"蘇珊·坎恩《安靜，就是力量》"},
+  {text:"比較是快樂的竊賊。",source:"羅斯福"},
+  {text:"不完整不代表不完美，有時候空隙才是光進來的地方。",source:"李歐納·科恩"},
+  {text:"接受幫助，不是軟弱，是另一種形式的勇氣。",source:"布琳·布朗"},
+  {text:"你的情緒不是你的敵人，它們是提醒你某些事情很重要的訊號。",source:"ACT 接受與承諾療法"},
+  {text:"你過去的每一個決定，都是當時的你能做到的最好。",source:"自我慈悲理論，克里斯汀·聶夫"},
+  {text:"對自己好一點，就像你對一個你真心喜歡的朋友那樣。",source:"克里斯汀·聶夫《自我慈悲》"},
+  {text:"情緒像天氣，你不是天氣，你是觀察天氣的那個人。",source:"正念減壓 MBSR 觀點"},
+  {text:"慢慢來，是另一種到達的方式。",source:"奧克塔維奧·帕斯 改寫"},
+  {text:"你不必解決所有的事，才能繼續往前走。",source:"敘事治療觀點"},
+  {text:"痛苦說明你還在感受，而感受，是生命力本身。",source:"維克多·法蘭可《活出意義來》改寫"},
+  {text:"你的故事還在寫，現在這一頁不是結局。",source:"敘事治療"},
+  {text:"勇氣不是沒有恐懼，而是帶著恐懼仍然向前。",source:"尼爾森·曼德拉"},
+  {text:"你對他人的善意，也值得給回自己一份。",source:"慈悲心訓練 CFT"},
+  {text:"所謂成長，不是消除軟弱，而是與軟弱和解。",source:"榮格分析心理學改寫"},
+  {text:"你的過去塑造了你，但不定義你的下一步。",source:"存在主義心理學"},
+  {text:"你能夠對自己誠實，這需要的勇氣比你以為的多。",source:"存在主義"},
+  {text:"你的感受不需要被合理化，才能存在。",source:"情緒聚焦療法 EFT"},
+  {text:"你不是你的焦慮，你是那個正在面對焦慮的人。",source:"ACT 去融合技術"},
+  {text:"你的敏感是雷達，不是缺陷。",source:"高敏感族研究，伊蓮·艾融"},
+  {text:"有時候，什麼都不做，只是坐著，也是一種照顧自己。",source:"正念觀點"},
+  {text:"你今天對自己說了什麼，比別人對你說了什麼更重要。",source:"認知行為療法 CBT"},
+  {text:"你的疲憊是真實的，不需要假裝它不存在。",source:"情緒確認技術"},
+  {text:"你對自己的期待可以高，但對自己的愛不應該有條件。",source:"自我慈悲理論"},
+  {text:"你能夠回頭照顧自己，就是你已經開始改變的證明。",source:"行為改變理論"},
+  {text:"你值得佔據空間，你值得發出聲音。",source:"界限與自我主張研究"},
+  {text:"有時迷失方向，不代表走錯，只是還沒找到路。",source:"存在主義"},
+  {text:"你今天選擇打開這裡，是你在照顧自己。",source:"輕鏡"},
+  {text:"你的複雜不是問題，是你豐富的一部分。",source:"後現代心理學"},
+  {text:"慢一點沒關係，你的節奏，就是你的節奏。",source:"輕鏡"},
 ];
 
 const MOOD_RESPONSES = {
-  calm: [
+  calm:[
     "平靜也是一種很好的狀態，不用刻意找事做，就這樣待著也很好。",
     "今天的你很穩，這種安定感，是你慢慢練出來的。",
     "沒有大起大落，這樣的日子也值得被珍惜。",
     "平靜的時候最容易被忽略，但這其實很珍貴，好好感受它。",
-    "你今天很安穩，這份平靜不需要理由，就讓它在。",
     "不是每天都要轟轟烈烈，平靜地過一天，也是一種圓滿。",
-    "今天的你很安定，這種感覺，值得多一點。",
   ],
-  happy: [
+  happy:[
     "欸，不錯耶！今天的你狀態很好，要記住這個感覺喔。",
     "你今天很棒，真的。這種輕鬆的感覺，值得好好享受。",
     "看到你今天還不錯，我也跟著開心了一下。",
-    "今天的你閃閃發光，繼續保持這個節奏吧。",
     "你值得這種好心情，一點都不是僥倖，是你自己撐出來的。",
-    "今天過得不錯，辛苦了，也謝謝你讓自己有這樣的一天。",
     "這種開心的感覺，是你應得的，好好收下吧。",
-    "你今天很可愛，是那種發自內心的舒服感，繼續這樣下去就好。",
   ],
-  tired: [
+  tired:[
     "累了就累了，沒關係，你已經很努力了，今天可以放自己一馬。",
     "你今天好累喔，辛苦了，真的辛苦你了。",
     "就算很累，你還是撐過來了，這真的很厲害，給自己拍拍。",
-    "今天先別逼自己，累就是該休息的訊號，聽身體的話。",
     "你已經很努力撐到現在了，剩下的，慢慢來就好。",
-    "你的累我看到了，這不是你的問題，是你真的付出很多。",
-    "今天什麼都不用想，先讓自己喘口氣吧，你值得這個休息。",
     "累的時候最容易看不起自己，但你今天真的做得很好了。",
   ],
-  drained: [
+  drained:[
     "提不起勁的時候，不是你懶，是你的電量真的見底了。",
     "沒力氣很正常，不用逼自己振作，先讓自己躺著也可以。",
     "今天什麼都不想做也沒關係，這不是你的錯。",
-    "沒力氣的時候，連休息都很難，辛苦了，先給自己一點空間。",
     "你不是不努力，你是真的累到沒力氣了，這是身體在保護你。",
     "今天可以什麼都不做，這個允許，現在給你。",
-    "提不起勁不代表退步，有時候只是需要先停下來充電。",
   ],
-  sad: [
+  sad:[
     "今天很不好受對吧，沒關係，你不需要假裝堅強。",
     "我知道現在很難受，這種感覺是真的，你不是在小題大作。",
-    "今天什麼都不用解決，你只需要好好撐過這一刻就好。",
     "你已經很努力了，就算今天什麼都做不到，也沒關係。",
     "這種感覺很難受，我懂，你值得被好好抱一下。",
-    "難過的日子也是日子，你不是一個人在扛，這裡陪著你。",
-    "你今天很不好，這不是你的錯，你已經很努力在撐了。",
     "辛苦了，真的辛苦了，今天先讓自己好好被照顧吧。",
   ],
-  irritable: [
+  irritable:[
     "煩躁不是你的問題，有時候情緒就是需要一個出口。",
     "覺得什麼都不順，這種感覺很消耗人，辛苦了。",
-    "煩躁的時候不用對自己太嚴格，這只是一種正常的情緒反應。",
     "今天看什麼都不順眼，沒關係，你不需要勉強自己冷靜。",
     "易怒不代表你不好，可能只是累積太多了，需要被釋放。",
-    "你今天有點刺刺的，沒關係，先讓自己喘口氣，不用急著變好。",
     "煩躁也是一種真實的感受，你不用因為它而責怪自己。",
   ],
-  numb: [
+  numb:[
     "感覺空空的，什麼都不太想，沒關係，這也是一種狀態。",
     "麻木有時候是心在保護你，先別急著逼自己感受什麼。",
-    "什麼都感覺不到，也不用因此而著急，它會慢慢回來。",
     "空空的感覺很難形容，但你不孤單，這裡陪著你。",
-    "今天感覺很疏離也沒關係，你不需要勉強自己充滿情緒。",
     "麻木不是冷漠，可能是你已經扛了太多，需要先放空。",
     "空空的也是一種誠實，你不用假裝自己感覺很多。",
   ],
-  unsure: [
+  unsure:[
     "說不清楚也沒關係，有時候心情本來就是一團亂，正常的。",
     "你不用馬上搞懂自己，慢慢來，這裡不急。",
-    "搞不清楚自己怎麼了，是很誠實的感覺，不用逼自己馬上想清楚。",
     "這種模糊的感覺也是一種真實，你不需要替它找一個答案。",
     "你今天有點迷惘，沒關係，迷惘也是一種誠實面對自己。",
-    "說不出來就先別說，有時候感覺需要時間才會浮出來。",
-    "你正在慢慢認識自己，這件事本身就值得被肯定。",
     "不確定也是一種答案，你已經很努力在感受自己了。",
   ],
-  needhug: [
+  needhug:[
     "過來，讓我先抱你一下。今天的你，值得被好好疼。",
     "想被抱抱沒什麼不好意思的，這是你最誠實的需要。",
     "你今天需要一點溫暖，這裡給你，慢慢收下就好。",
-    "想被抱抱，就代表你今天有點脆弱，這完全可以，你不用堅強。",
     "你值得被擁抱，不是因為你做了什麼，只是因為你是你。",
-    "今天的你需要被好好接住，這個願望，一點都不貪心。",
     "想要被抱抱是很可愛的事，你不用覺得自己太多需求。",
   ],
 };
 
-// TASKS: layered
-const TASK_LAYERS = [
-  {
-    label: "🌿 日常存在",
-    tasks: [
-      { id:"water", label:"今天喝了水", badge:"💧", bname:"水滴守護者", bdesc:"你今天記得補充水分。身體是你最親近的家，謝謝你照顧它。" },
-      { id:"eat",   label:"今天吃了東西", badge:"🍊", bname:"滋養者", bdesc:"你今天餵養了自己。這是最基本卻最重要的自我照顧之一。" },
-      { id:"sleep", label:"今天有讓自己休息", badge:"🌙", bname:"安眠旅人", bdesc:"你讓自己休息了。身體需要它，你也是。" },
-      { id:"here",  label:"今天打開了輕鏡", badge:"🪞", bname:"歸來的人", bdesc:"你今天回來了。這個小小的動作，就是照顧自己的方式之一。" },
-    ]
-  },
-  {
-    label: "🌸 刻意一點點",
-    tasks: [
-      { id:"outside",label:"今天有出門或看向窗外", badge:"🌿", bname:"光的接收者", bdesc:"你讓自己接觸了外面的世界，哪怕只是一眼。" },
-      { id:"move",  label:"今天身體有動一動", badge:"🌸", bname:"輕盈行者", bdesc:"你讓身體動了，無論是散步、伸展，或是起身倒水。" },
-      { id:"talk",  label:"今天和人說了話", badge:"🧡", bname:"連結者", bdesc:"你今天有跟世界說了話，這不是每天都容易做到的。" },
-      { id:"feel",  label:"今天有注意到自己的情緒", badge:"🌊", bname:"感受力", bdesc:"你注意到了自己的情緒，這是自我了解最重要的第一步。" },
-      { id:"kind",  label:"今天對自己說了一句好話", badge:"🕊️", bname:"溫柔練習者", bdesc:"你對自己說了好話。哪怕只有一句，都是很珍貴的練習。" },
-    ]
-  },
-  {
-    label: "✨ 正念萌芽",
-    tasks: [
-      { id:"quiet",  label:"今天給了自己一段放空的時間", badge:"☁️", bname:"寧靜時光", bdesc:"你給了自己空白的時間。什麼都不做，有時是最需要的事。" },
-      { id:"pause",  label:"情緒來的時候，先停下來三秒", badge:"⏸️", bname:"三秒勇者", bdesc:"你在情緒中先停了下來。這三秒，是你給自己最珍貴的禮物之一。" },
-      { id:"notice", label:"今天注意到一個讓自己開心的細節", badge:"🔍", bname:"細節觀察家", bdesc:"你今天發現了一個小小的美好。能看見它，是一種訓練出來的眼光。" },
-      { id:"nojudge",label:"今天沒有因為自己的樣子而責怪自己", badge:"🌻", bname:"非評判者", bdesc:"你今天放下了對自己的批判。這比你想像的，需要更多練習與勇氣。" },
-      { id:"selfvalidate",label:"今天試著自己決定「這樣就好」，沒有反覆找人確認", badge:"🔑", bname:"自己給的肯定", bdesc:"你今天沒有向外尋找答案，而是自己決定了「我這樣可以」。這是很不容易的一步。" },
-    ]
-  }
-];
-
-const ALL_TASKS = TASK_LAYERS.flatMap(l => l.tasks);
-
-// Streak thresholds per task: [days, badgeVariant]
-const STREAK_TIERS = [
-  { days: 3,  suffix: "·三日", extra: "連續三天做到了。習慣正在悄悄長出來。" },
-  { days: 7,  suffix: "·七日", extra: "整整一週。你已經開始改變了。" },
-  { days: 30, suffix: "·三十日", extra: "三十天。這是真正屬於你的成就。" },
+const TIMER_QUOTES = [
+  "這幾分鐘是你的，什麼都不用想。",
+  "先停下來，其他的事等你回來再說。",
+  "你值得這段什麼都不做的時間。",
+  "呼吸就好，別的事情等一下再說。",
+  "放空也是一種工作，而且是你最重要的工作之一。",
+  "這幾分鐘，只屬於你自己。",
+  "你已經很努力了，先讓自己喘口氣。",
+  "不用做任何事，只是存在著就好。",
+  "這是你給自己的空白，好好待在裡面。",
+  "慢下來，感覺一下現在這個時刻。",
 ];
 
 // ── STATE ──
 let state = {
-  name: "",
-  theme: "light",
-  checkinDates: [],
-  savedQuotes: {},
-  savedCards: [],
-  taskDates: {},
-  taskStreaks: {},
-  unlockedBadges: [],
-  notes: [],
-  dailyMood: {},   // { "YYYY-MM-DD": { mood: "calm", text: "..." } }
-  dailyQuote: {},  // { "YYYY-MM-DD": quoteIndex } - keeps today's quote stable across reloads
+  name:"", theme:"light",
+  checkinDates:[],
+  savedQuotes:{},
+  savedCards:{},
+  notes:[],
+  dailyMood:{},
+  dailyQuote:{},
+  dailyTask:{},   // { "YYYY-MM-DD": { text:"", done:false } }
+  customQuotes:[], // [{text, id}]
 };
 
-function getTW(d) {
-  return new Date(d.getTime() + 8*3600000);
+function getTW(d){ return new Date(d.getTime()+8*3600000); }
+function todayStr(){ return getTW(new Date()).toISOString().slice(0,10); }
+
+function loadState(){
+  try{
+    const s=JSON.parse(localStorage.getItem("gm_v3")||"{}");
+    Object.assign(state,s);
+    if(Array.isArray(state.savedCards)) state.savedCards={};
+    if(!state.dailyMood) state.dailyMood={};
+    if(!state.dailyQuote) state.dailyQuote={};
+    if(!state.dailyTask) state.dailyTask={};
+    if(!state.customQuotes) state.customQuotes=[];
+  }catch(e){}
 }
-function todayStr() {
-  return getTW(new Date()).toISOString().slice(0,10);
-}
-function loadState() {
-  try {
-    const saved = JSON.parse(localStorage.getItem("gm_v2") || "{}");
-    Object.assign(state, saved);
-    // compat: savedCards was previously a flat array, reset if so
-    if (Array.isArray(state.savedCards)) state.savedCards = {};
-    if (!state.dailyMood) state.dailyMood = {};
-    if (!state.dailyQuote) state.dailyQuote = {};
-  } catch(e) {}
-}
-function saveState() {
-  localStorage.setItem("gm_v2", JSON.stringify(state));
-}
+function saveState(){ localStorage.setItem("gm_v3",JSON.stringify(state)); }
 
 // ── WELCOME ──
-function startApp() {
-  const n = document.getElementById("name-input").value.trim();
-  if (!n) { showToast("先告訴我怎麼稱呼你吧 🌸"); return; }
-  state.name = n;
-  saveState();
+function startApp(){
+  const n=document.getElementById("name-input").value.trim();
+  if(!n){ showToast("先告訴我怎麼稱呼你吧 🌸"); return; }
+  state.name=n; saveState();
   document.getElementById("welcome-screen").classList.add("hide");
-  setTimeout(() => {
-    document.getElementById("welcome-screen").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-    initApp();
-  }, 650);
+  setTimeout(()=>{ document.getElementById("welcome-screen").style.display="none"; document.getElementById("app").style.display="flex"; initApp(); },650);
 }
 
 // ── INIT ──
-let currentQuoteIdx = -1;
-let calYear, calMonth, calSelectedDate;
+let currentQuoteIdx=-1, currentMoodResponse="", starFilterOn=false;
+let timerTotal=300, timerLeft=300, timerRunning=false, timerInterval=null;
 
-function initApp() {
-  applyTheme(state.theme, false);
-  const name = state.name;
-  document.getElementById("top-greeting").textContent = name + "，你好";
-  const d = getTW(new Date());
-  const wd = ["日","一","二","三","四","五","六"][d.getUTCDay()];
-  document.getElementById("top-date").textContent =
-    d.getUTCFullYear()+" 年 "+(d.getUTCMonth()+1)+" 月 "+d.getUTCDate()+" 日 · 週"+wd;
-  document.getElementById("name-setting").value = name;
+function initApp(){
+  applyTheme(state.theme);
+  const name=state.name;
+  document.getElementById("top-greeting").textContent=name+"，你好";
+  const d=getTW(new Date());
+  const wd=["日","一","二","三","四","五","六"][d.getUTCDay()];
+  document.getElementById("top-date").textContent=d.getUTCFullYear()+" 年 "+(d.getUTCMonth()+1)+" 月 "+d.getUTCDate()+" 日 · 週"+wd;
+  document.getElementById("name-setting").value=name;
   updateStreak();
   renderCheckin();
   nextQuote();
   restoreDailyMood();
-  renderTasks();
   renderNotes();
-  const now = getTW(new Date());
-  calYear = now.getUTCFullYear(); calMonth = now.getUTCMonth();
-  renderCalendar();
-
-  // bind overlay close
-  document.getElementById("badge-collection-btn").onclick = openBadgeCollection;
-  document.getElementById("badge-overlay").onclick = function(e){ if(e.target===this) closeBadgeCollection(); };
-  document.getElementById("badge-overlay-close").onclick = closeBadgeCollection;
-  document.getElementById("badge-detail-overlay").onclick = function(e){ if(e.target===this) closeBadgeDetail(); };
-  document.getElementById("badge-detail-close").onclick = closeBadgeDetail;
-  document.getElementById("note-modal").onclick = function(e){ if(e.target===this) closeNoteModal(); };
-  document.getElementById("note-modal-close").onclick = closeNoteModal;
+  renderTodayTask();
+  renderCustomQuotes();
+  initTimer();
+  document.getElementById("note-modal").onclick=function(e){if(e.target===this)closeNoteModal();};
+  document.getElementById("note-modal-close").onclick=closeNoteModal;
 }
 
-function updateStreak() {
-  document.getElementById("streak-badge").textContent = "🌱 打卡 "+state.checkinDates.length+" 天";
+function updateStreak(){ document.getElementById("streak-badge").textContent="🌱 打卡 "+state.checkinDates.length+" 天"; }
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme",t);
+  document.getElementById("theme-light-btn").classList.toggle("active",t==="light");
+  document.getElementById("theme-dark-btn").classList.toggle("active",t==="dark");
 }
-
-// ── THEME ──
-function setTheme(t) {
-  state.theme = t;
-  saveState();
-  applyTheme(t, true);
-}
-function applyTheme(t, animate) {
-  document.documentElement.setAttribute("data-theme", t);
-  document.getElementById("theme-light-btn").classList.toggle("active", t==="light");
-  document.getElementById("theme-dark-btn").classList.toggle("active", t==="dark");
-}
+function setTheme(t){ state.theme=t; saveState(); applyTheme(t); }
 
 // ── CHECKIN ──
-function renderCheckin() {
-  const today = todayStr();
-  const done = state.checkinDates.includes(today);
-  const btn = document.getElementById("checkin-btn");
-  const label = document.getElementById("checkin-label");
-  const fb = document.getElementById("checkin-feedback");
-  if (done) {
-    btn.className = "checkin-btn done";
-    btn.textContent = "🌸";
-    label.textContent = "你已經打卡了。今天的你，已經存在著。";
-    fb.textContent = buildCheckinFeedback();
-  } else {
-    btn.className = "checkin-btn idle";
-    btn.textContent = "🌙";
-    label.textContent = "點一下，告訴這一天你在這裡";
-    fb.textContent = "";
-  }
+function renderCheckin(){
+  const today=todayStr(), done=state.checkinDates.includes(today);
+  const btn=document.getElementById("checkin-btn");
+  const label=document.getElementById("checkin-label");
+  const fb=document.getElementById("checkin-feedback");
+  if(done){ btn.className="checkin-btn done"; btn.textContent="🌸"; label.textContent="你已經打卡了。今天的你，已經存在著。"; fb.textContent=buildCheckinFeedback(); }
+  else { btn.className="checkin-btn idle"; btn.textContent="🌙"; label.textContent="點一下，告訴這一天你在這裡"; fb.textContent=""; }
 }
-
-function buildCheckinFeedback() {
-  const today = todayStr();
-  const done = state.taskDates[today] || [];
-  if (!done.length) return "";
-  const labels = done.map(id => {
-    const t = ALL_TASKS.find(x=>x.id===id);
-    return t ? t.label.replace("今天","") : "";
-  }).filter(Boolean);
-  if (!labels.length) return "";
-  return "今天你" + labels.slice(0,3).join("、") + "，這已經很好了。";
+function buildCheckinFeedback(){
+  const today=todayStr(), task=state.dailyTask[today];
+  if(task&&task.done) return "今天你完成了「"+task.text+"」，這很了不起。";
+  return "";
 }
-
-function doCheckin(e) {
-  const today = todayStr();
-  if (state.checkinDates.includes(today)) return;
-  const btn = e.currentTarget;
-  const r = document.createElement("div");
-  r.className = "checkin-ripple";
-  r.style.left = "50%"; r.style.top = "50%";
-  btn.appendChild(r);
-  setTimeout(()=>r.remove(), 600);
-  state.checkinDates.push(today);
-  saveState();
-  renderCheckin();
-  updateStreak();
-  showToast("✨ 你今天存在著");
-  renderCalendar();
+function doCheckin(e){
+  const today=todayStr();
+  if(state.checkinDates.includes(today)) return;
+  const btn=e.currentTarget;
+  const r=document.createElement("div"); r.className="checkin-ripple"; r.style.left="50%"; r.style.top="50%"; btn.appendChild(r); setTimeout(()=>r.remove(),600);
+  state.checkinDates.push(today); saveState();
+  renderCheckin(); updateStreak(); showToast("✨ 你今天存在著");
 }
 
 // ── QUOTES ──
-let quoteShown = [];
-function nextQuote(forceNew) {
-  const today = todayStr();
+function allQuotes(){ return [...QUOTES, ...state.customQuotes.map(q=>({text:q.text,source:"你加入的"}))] ; }
+let quoteShown=[];
+function nextQuote(forceNew){
+  const today=todayStr(), pool=allQuotes();
   let idx;
-  if (!forceNew && state.dailyQuote[today] !== undefined) {
-    // restore today's quote instead of picking a new random one (e.g. after reload/import)
-    idx = state.dailyQuote[today];
-  } else {
-    if (quoteShown.length >= QUOTES.length) quoteShown = [];
-    do { idx = Math.floor(Math.random()*QUOTES.length); } while(quoteShown.includes(idx));
-    quoteShown.push(idx);
-    state.dailyQuote[today] = idx;
-    saveState();
+  if(!forceNew&&state.dailyQuote[today]!==undefined&&state.dailyQuote[today]<pool.length){ idx=state.dailyQuote[today]; }
+  else{
+    if(quoteShown.length>=pool.length) quoteShown=[];
+    do{ idx=Math.floor(Math.random()*pool.length); }while(quoteShown.includes(idx));
+    quoteShown.push(idx); state.dailyQuote[today]=idx; saveState();
   }
-  currentQuoteIdx = idx;
-  const qt = document.getElementById("quote-text");
-  const qs = document.getElementById("quote-source");
+  currentQuoteIdx=idx;
+  const qt=document.getElementById("quote-text"), qs=document.getElementById("quote-source");
   qt.style.opacity=0; qs.style.opacity=0;
   setTimeout(()=>{
-    qt.textContent = QUOTES[idx].text;
-    qs.textContent = "── " + QUOTES[idx].source;
+    const q=pool[idx]||pool[0];
+    qt.textContent=q.text; qs.textContent="── "+q.source;
     qt.style.opacity=1; qs.style.opacity=1;
-    const saved = (state.savedQuotes[today]||[]).includes(idx);
-    const btn = document.getElementById("quote-save-btn");
-    btn.textContent = saved ? "已收藏 ✓" : "收藏這句";
-    btn.className = saved ? "quote-btn saved" : "quote-btn";
+    const saved=(state.savedQuotes[today]||[]).includes(idx);
+    const btn=document.getElementById("quote-save-btn");
+    btn.textContent=saved?"已收藏 ✓":"收藏這句"; btn.className=saved?"quote-btn saved":"quote-btn";
   },300);
 }
-function saveQuote() {
-  const today = todayStr();
-  if (!state.savedQuotes[today]) state.savedQuotes[today] = [];
-  const already = state.savedQuotes[today].indexOf(currentQuoteIdx);
-  const btn = document.getElementById("quote-save-btn");
-  if (already !== -1) {
-    state.savedQuotes[today].splice(already, 1);
-    btn.textContent = "收藏這句"; btn.className = "quote-btn";
-    showToast("已取消收藏");
-  } else {
-    state.savedQuotes[today].push(currentQuoteIdx);
-    btn.textContent = "已收藏 ✓"; btn.className = "quote-btn saved";
-    showToast("收藏成功 🌸");
-  }
-  saveState(); renderCalendar();
+function saveQuote(){
+  const today=todayStr();
+  if(!state.savedQuotes[today]) state.savedQuotes[today]=[];
+  const already=state.savedQuotes[today].indexOf(currentQuoteIdx);
+  const btn=document.getElementById("quote-save-btn");
+  if(already!==-1){ state.savedQuotes[today].splice(already,1); btn.textContent="收藏這句"; btn.className="quote-btn"; showToast("已取消收藏"); }
+  else{ state.savedQuotes[today].push(currentQuoteIdx); btn.textContent="已收藏 ✓"; btn.className="quote-btn saved"; showToast("收藏成功 🌸"); }
+  saveState();
+}
+
+// ── CUSTOM QUOTES ──
+function addCustomQuote(){
+  const input=document.getElementById("custom-quote-input");
+  const text=input.value.trim();
+  if(!text){ showToast("請輸入句子內容"); return; }
+  state.customQuotes.push({text,id:Date.now()});
+  saveState(); input.value="";
+  renderCustomQuotes(); showToast("加入了 🌸");
+}
+function deleteCustomQuote(id){
+  state.customQuotes=state.customQuotes.filter(q=>q.id!=id);
+  saveState(); renderCustomQuotes(); showToast("已刪除");
+}
+function renderCustomQuotes(){
+  const list=document.getElementById("custom-quote-list");
+  if(!state.customQuotes.length){ list.innerHTML='<div class="custom-quote-empty">還沒有加入任何句子</div>'; return; }
+  list.innerHTML=state.customQuotes.map(q=>`
+    <div class="custom-quote-item">
+      <span>${esc(q.text)}</span>
+      <button class="custom-quote-del" onclick="deleteCustomQuote(${q.id})">✕</button>
+    </div>`).join("");
 }
 
 // ── MOOD ──
-let currentMoodResponse = "";
-function selectMood(mood, label) {
+function selectMood(mood,label){
   document.querySelectorAll(".mood-btn").forEach(b=>b.classList.remove("selected"));
-  if (event && event.currentTarget) event.currentTarget.classList.add("selected");
+  if(event&&event.currentTarget) event.currentTarget.classList.add("selected");
   else markMoodBtnSelected(mood);
-  const pool = MOOD_RESPONSES[mood];
-  const text = pool[Math.floor(Math.random()*pool.length)];
-  currentMoodResponse = text;
-  state.dailyMood[todayStr()] = { mood, text };
-  saveState();
-  renderMoodResponseCard(mood, text);
+  const pool=MOOD_RESPONSES[mood];
+  const text=pool[Math.floor(Math.random()*pool.length)];
+  currentMoodResponse=text;
+  state.dailyMood[todayStr()]={mood,text}; saveState();
+  renderMoodCard(mood,text);
 }
-function markMoodBtnSelected(mood) {
-  const btn = document.querySelector(`.mood-btn[onclick*="'${mood}'"]`);
-  if (btn) btn.classList.add("selected");
+function markMoodBtnSelected(mood){
+  const btn=document.querySelector(`.mood-btn[onclick*="'${mood}'"]`);
+  if(btn) btn.classList.add("selected");
 }
-function renderMoodResponseCard(mood, text) {
-  const today = todayStr();
-  const saved = (state.savedCards[today]||[]).includes(text);
-  const area = document.getElementById("mood-response");
-  area.innerHTML = `
+function renderMoodCard(mood,text){
+  const today=todayStr(), saved=(state.savedCards[today]||[]).includes(text);
+  document.getElementById("mood-response").innerHTML=`
     <div class="response-card">
       <div class="response-text">${text}</div>
       <div class="response-actions">
-        <button class="response-btn" onclick="refreshMoodResponse('${mood}')">換一句</button>
+        <button class="response-btn" onclick="refreshMood('${mood}')">換一句</button>
         <button class="response-btn ${saved?"saved":""}" id="card-save-btn" onclick="saveMoodCard()">${saved?"已收藏 ✓":"收藏這句"}</button>
       </div>
     </div>`;
 }
-function refreshMoodResponse(mood) {
-  const pool = MOOD_RESPONSES[mood];
-  const text = pool[Math.floor(Math.random()*pool.length)];
-  currentMoodResponse = text;
-  state.dailyMood[todayStr()] = { mood, text };
+function refreshMood(mood){
+  const pool=MOOD_RESPONSES[mood], text=pool[Math.floor(Math.random()*pool.length)];
+  currentMoodResponse=text; state.dailyMood[todayStr()]={mood,text}; saveState();
+  document.querySelector(".response-text").textContent=text;
+  const sb=document.getElementById("card-save-btn");
+  if(sb){sb.textContent="收藏這句";sb.className="response-btn";}
+}
+function saveMoodCard(){
+  if(!currentMoodResponse) return;
+  const btn=document.getElementById("card-save-btn"), today=todayStr();
+  if(!state.savedCards[today]) state.savedCards[today]=[];
+  const idx=state.savedCards[today].indexOf(currentMoodResponse);
+  if(idx!==-1){ state.savedCards[today].splice(idx,1); if(btn){btn.textContent="收藏這句";btn.classList.remove("saved");} showToast("已取消收藏"); }
+  else{ state.savedCards[today].push(currentMoodResponse); if(btn){btn.textContent="已收藏 ✓";btn.classList.add("saved");} showToast("收藏成功 ✨"); }
   saveState();
-  document.querySelector(".response-text").textContent = text;
-  const sb = document.getElementById("card-save-btn");
-  if(sb){ sb.textContent="收藏這句"; sb.className="response-btn"; }
 }
-function restoreDailyMood() {
-  const today = todayStr();
-  const saved = state.dailyMood[today];
-  if (saved) {
-    currentMoodResponse = saved.text;
-    renderMoodResponseCard(saved.mood, saved.text);
-    markMoodBtnSelected(saved.mood);
+function restoreDailyMood(){
+  const today=todayStr(), saved=state.dailyMood[today];
+  if(saved){ currentMoodResponse=saved.text; renderMoodCard(saved.mood,saved.text); markMoodBtnSelected(saved.mood); }
+  else{ currentMoodResponse=""; document.getElementById("mood-response").innerHTML=""; document.querySelectorAll(".mood-btn").forEach(b=>b.classList.remove("selected")); }
+}
+
+// ── TODAY TASK ──
+const TASK_DONE_MSGS = [
+  "你做到了，今天這件事完成了，了不起。",
+  "完成了！今天的你很厲害。",
+  "做到了這一件事，今天就夠了。",
+  "你今天說到做到，真的很好。",
+  "這件事打勾了，給自己拍拍手吧。",
+];
+function renderTodayTask(){
+  const today=todayStr(), task=state.dailyTask[today];
+  const area=document.getElementById("todotask-area");
+  if(!task||!task.text){
+    area.innerHTML=`
+      <div class="todotask-empty">今天，只要完成一件事就夠了。</div>
+      <div class="todotask-input-row">
+        <input class="todotask-input" id="todotask-input" type="text" placeholder="這件事是…" maxlength="40">
+        <button class="todotask-set-btn" onclick="setTodayTask()">設定</button>
+      </div>
+      <div class="todotask-hint">把最重要的一件事寫下來，完成後勾掉它。</div>`;
   } else {
-    currentMoodResponse = "";
-    const area = document.getElementById("mood-response");
-    if (area) area.innerHTML = "";
-    document.querySelectorAll(".mood-btn").forEach(b=>b.classList.remove("selected"));
+    const doneMsg=task.done ? `<div class="todotask-done-msg">${TASK_DONE_MSGS[Math.floor(Math.random()*TASK_DONE_MSGS.length)]}</div>` : "";
+    area.innerHTML=`
+      <div class="todotask-display ${task.done?"done":""}" onclick="toggleTodayTask()">
+        <div class="todotask-circle">${task.done?"✓":""}</div>
+        <div class="todotask-text">${esc(task.text)}</div>
+      </div>
+      ${doneMsg}
+      ${!task.done?`<div class="todotask-hint" style="margin-top:12px">點一下完成它</div>`:""}`;
   }
 }
-function saveMoodCard() {
-  if (!currentMoodResponse) return;
-  const btn = document.getElementById("card-save-btn");
-  const today = todayStr();
-  if (!state.savedCards[today]) state.savedCards[today] = [];
-  const idx = state.savedCards[today].indexOf(currentMoodResponse);
-  if (idx !== -1) {
-    state.savedCards[today].splice(idx, 1);
-    if(btn){ btn.textContent="收藏這句"; btn.classList.remove("saved"); }
-    showToast("已取消收藏");
-  } else {
-    state.savedCards[today].push(currentMoodResponse);
-    if(btn){ btn.textContent="已收藏 ✓"; btn.classList.add("saved"); }
-    showToast("收藏成功 ✨");
-  }
-  saveState(); renderCalendar();
+function setTodayTask(){
+  const input=document.getElementById("todotask-input");
+  const text=(input?input.value:"").trim();
+  if(!text){ showToast("先寫下想完成的事吧"); return; }
+  state.dailyTask[todayStr()]={text,done:false}; saveState();
+  renderTodayTask(); renderCheckin();
+}
+function toggleTodayTask(){
+  const today=todayStr(), task=state.dailyTask[today];
+  if(!task) return;
+  task.done=!task.done; saveState();
+  if(task.done){ confetti(); showToast("🎉 完成了！"); }
+  renderTodayTask(); renderCheckin();
 }
 
-// ── TASKS ──
-function renderTasks() {
-  const today = todayStr();
-  const done = state.taskDates[today] || [];
-  let html = "";
-  TASK_LAYERS.forEach(layer => {
-    html += `<div class="task-section-label">${layer.label}</div>`;
-    html += `<div class="task-list">`;
-    layer.tasks.forEach(t => {
-      const checked = done.includes(t.id);
-      const streak = state.taskStreaks[t.id] || 0;
-      const streakLabel = streak >= 3 ? `🔥 ${streak} 天` : "";
-      html += `<div class="task-item ${checked?"checked":""}" onclick="toggleTask('${t.id}')">
-        <div class="task-check">${checked?"✓":""}</div>
-        <div class="task-label">${t.label}</div>
-        ${streakLabel ? `<div class="task-streak">${streakLabel}</div>` : ""}
-      </div>`;
-    });
-    html += `</div>`;
-  });
-  document.getElementById("task-list-wrap").innerHTML = html;
+// ── TIMER ──
+const CIRC=2*Math.PI*88;
+function initTimer(){
+  document.getElementById("timer-fill").style.strokeDasharray=CIRC;
+  updateTimerDisplay();
+  const rq=TIMER_QUOTES[Math.floor(Math.random()*TIMER_QUOTES.length)];
+  document.getElementById("timer-quote").textContent=rq;
 }
-
-function toggleTask(id) {
-  const today = todayStr();
-  if (!state.taskDates[today]) state.taskDates[today] = [];
-  const arr = state.taskDates[today];
-  const idx = arr.indexOf(id);
-  if (idx !== -1) {
-    arr.splice(idx, 1);
-  } else {
-    arr.push(id);
-    checkBadgeUnlock(id, today);
-  }
-  saveState();
-  renderTasks();
-  renderCheckin();
+function setTimerPreset(mins){
+  if(timerRunning) return;
+  document.querySelectorAll(".timer-preset-btn").forEach(b=>b.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+  document.getElementById("timer-custom").value=mins;
+  timerTotal=mins*60; timerLeft=timerTotal; updateTimerDisplay();
 }
-
-function checkBadgeUnlock(id, today) {
-  const t = ALL_TASKS.find(x=>x.id===id);
-  if (!t) return;
-  // base badge
-  if (!state.unlockedBadges.includes(id)) {
-    state.unlockedBadges.push(id);
-    showToast(`🎉 解鎖了「${t.bname}」徽章`);
-    confetti();
-  }
-  // streak
-  const streak = calcStreak(id, today);
-  state.taskStreaks[id] = streak;
-  STREAK_TIERS.forEach(tier => {
-    const key = id + "_" + tier.days;
-    if (streak >= tier.days && !state.unlockedBadges.includes(key)) {
-      state.unlockedBadges.push(key);
-      setTimeout(()=>{
-        showToast(`🌟 連續 ${tier.days} 天！解鎖「${t.bname}${tier.suffix}」`);
-        confetti();
-      }, 1200);
-    }
-  });
+function setTimerCustom(val){
+  if(timerRunning) return;
+  const mins=Math.max(1,Math.min(60,parseInt(val)||5));
+  document.querySelectorAll(".timer-preset-btn").forEach(b=>b.classList.remove("active"));
+  timerTotal=mins*60; timerLeft=timerTotal; updateTimerDisplay();
 }
-
-function calcStreak(id, today) {
-  let count = 0;
-  let d = new Date(today + "T00:00:00+08:00");
-  while (true) {
-    const ds = getTW(d).toISOString().slice(0,10);
-    if ((state.taskDates[ds]||[]).includes(id)) { count++; d.setDate(d.getDate()-1); }
-    else break;
-  }
-  return count;
+function toggleTimer(){
+  if(timerLeft<=0){ resetTimer(); return; }
+  timerRunning=!timerRunning;
+  document.getElementById("timer-start-btn").textContent=timerRunning?"暫停":"繼續";
+  if(timerRunning){
+    const rq=TIMER_QUOTES[Math.floor(Math.random()*TIMER_QUOTES.length)];
+    document.getElementById("timer-quote").textContent=rq;
+    timerInterval=setInterval(()=>{
+      timerLeft--; updateTimerDisplay();
+      if(timerLeft<=0){ clearInterval(timerInterval); timerRunning=false; timerDone(); }
+    },1000);
+  } else { clearInterval(timerInterval); }
 }
-
-// ── BADGE COLLECTION ──
-function openBadgeCollection() {
-  const grid = document.getElementById("badge-grid");
-  let html = "";
-  ALL_TASKS.forEach(t => {
-    const unlocked = state.unlockedBadges.includes(t.id);
-    html += `<div class="badge-item ${unlocked?"unlocked":"locked"}" onclick="showBadgeDetail('${t.id}')">
-      <div class="badge-icon-wrap"><span style="font-size:28px">${t.badge}</span></div>
-      <div class="badge-name">${t.bname}</div>
-    </div>`;
-    // streak badges
-    STREAK_TIERS.forEach(tier => {
-      const key = t.id+"_"+tier.days;
-      const su = state.unlockedBadges.includes(key);
-      html += `<div class="badge-item ${su?"unlocked":"locked"}" onclick="showStreakBadgeDetail('${t.id}',${tier.days})">
-        <div class="badge-icon-wrap" style="position:relative">
-          <span style="font-size:20px">${t.badge}</span>
-          <span style="position:absolute;bottom:4px;right:4px;font-size:10px;background:var(--accent1);color:white;border-radius:6px;padding:1px 4px">${tier.days}d</span>
-        </div>
-        <div class="badge-name">${t.bname}<br><span style="color:var(--accent1)">${tier.days}天</span></div>
-      </div>`;
-    });
-  });
-  grid.innerHTML = html;
-  document.getElementById("badge-overlay").classList.add("open");
+function resetTimer(){
+  clearInterval(timerInterval); timerRunning=false; timerLeft=timerTotal;
+  document.getElementById("timer-start-btn").textContent="開始";
+  document.getElementById("timer-subtext").textContent="選好時間再開始";
+  updateTimerDisplay();
 }
-function closeBadgeCollection() {
-  document.getElementById("badge-overlay").classList.remove("open");
+function updateTimerDisplay(){
+  const mm=String(Math.floor(timerLeft/60)).padStart(2,"0");
+  const ss=String(timerLeft%60).padStart(2,"0");
+  document.getElementById("timer-display").textContent=mm+":"+ss;
+  const pct=timerTotal>0?timerLeft/timerTotal:1;
+  document.getElementById("timer-fill").style.strokeDashoffset=CIRC*(1-pct);
+  document.getElementById("timer-subtext").textContent=timerRunning?"放空中…":"選好時間再開始";
 }
-function showBadgeDetail(id) {
-  const t = ALL_TASKS.find(x=>x.id===id);
-  const unlocked = state.unlockedBadges.includes(id);
-  const streak = state.taskStreaks[id] || 0;
-  document.getElementById("badge-detail-icon").textContent = t.badge;
-  document.getElementById("badge-detail-name").textContent = t.bname;
-  document.getElementById("badge-detail-desc").textContent = unlocked ? t.bdesc : "還沒解鎖，但你可以的。";
-  document.getElementById("badge-detail-progress").textContent = streak >= 1 ? `目前連續 ${streak} 天 🔥` : "";
-  document.getElementById("badge-detail-overlay").classList.add("open");
-}
-function showStreakBadgeDetail(id, days) {
-  const t = ALL_TASKS.find(x=>x.id===id);
-  const key = id+"_"+days;
-  const unlocked = state.unlockedBadges.includes(key);
-  const tier = STREAK_TIERS.find(x=>x.days===days);
-  document.getElementById("badge-detail-icon").textContent = t.badge;
-  document.getElementById("badge-detail-name").textContent = t.bname + tier.suffix;
-  document.getElementById("badge-detail-desc").textContent = unlocked ? tier.extra : `連續 ${days} 天做到「${t.label}」就能解鎖。`;
-  document.getElementById("badge-detail-progress").textContent = unlocked ? "已解鎖 ✨" : `目前連續 ${state.taskStreaks[id]||0} 天`;
-  document.getElementById("badge-detail-overlay").classList.add("open");
-}
-function closeBadgeDetail() {
-  document.getElementById("badge-detail-overlay").classList.remove("open");
+function timerDone(){
+  document.getElementById("timer-display").textContent="00:00";
+  document.getElementById("timer-subtext").textContent="";
+  document.getElementById("timer-start-btn").textContent="再來一次";
+  document.getElementById("timer-quote").textContent="時間到了，你可以回來繼續了。";
+  confetti();
 }
 
 // ── DIARY ──
-let editingNoteId = null;
-function noteCardHtml(n) {
-  // deterministic small tilt based on id, so it doesn't jump around on re-render
-  const tilt = ((n.id % 7) - 3) * 0.5; // range roughly -1.5deg to 1.5deg
-  const timeStr = formatNoteTime(n.id);
+let editingNoteId=null;
+function noteCardHtml(n){
+  const tilt=((n.id%7)-3)*0.5;
+  const d=getTW(new Date(n.id));
+  const hh=String(d.getUTCHours()).padStart(2,"0"), mm=String(d.getUTCMinutes()).padStart(2,"0");
   return `<div class="note-card ${n.starred?"starred":""}" style="--tilt:${tilt}deg" onclick="openNoteModal('${n.id}')">
-    <div class="note-date">${n.date.slice(2).replace(/-/g,".")}<span class="note-time">${timeStr}</span></div>
+    <div class="note-date">${n.date.slice(2).replace(/-/g,".")}<span class="note-time">${hh}:${mm}</span></div>
     <div class="note-text">${esc(n.text)}</div>
     <div class="note-star" onclick="event.stopPropagation();toggleStar('${n.id}')">${n.starred?"★":"☆"}</div>
   </div>`;
 }
-function formatNoteTime(id) {
-  // id is Date.now() at creation/edit time; render Taiwan local hh:mm
-  // IMPORTANT: must use getUTCHours/getUTCMinutes here, not getHours/getMinutes.
-  // getTW() shifts the timestamp by +8h and is meant to be read with UTC accessors
-  // (matching how todayStr() uses toISOString()). Using local getHours() would apply
-  // the device's own timezone offset on top of this +8h shift, double-counting it.
-  const d = getTW(new Date(id));
-  const hh = String(d.getUTCHours()).padStart(2,"0");
-  const mm = String(d.getUTCMinutes()).padStart(2,"0");
-  return hh + ":" + mm;
-}
-let starFilterOn = false;
-function toggleStarFilter() {
-  starFilterOn = !starFilterOn;
-  const btn = document.getElementById("diary-filter-btn");
-  if (btn) btn.classList.toggle("active", starFilterOn);
+function toggleStarFilter(){
+  starFilterOn=!starFilterOn;
+  document.getElementById("diary-filter-btn").classList.toggle("active",starFilterOn);
   renderNotes();
 }
-function renderNotes() {
-  const wall = document.getElementById("notes-wall");
-  const hintEl = document.getElementById("diary-hint");
-  const searchInput = document.getElementById("diary-search");
-  const query = searchInput ? searchInput.value.trim() : "";
-
-  if (hintEl) hintEl.style.display = state.notes.length ? "none" : "block";
-
-  if (!state.notes.length) {
-    wall.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
-      <div class="empty-state-icon">📓</div>
-      想寫就寫，不想寫也沒關係<br>這裡不要求你每天都有話說
-    </div>`;
-    return;
-  }
-
-  let pool = [...state.notes];
-  if (query) pool = pool.filter(n => n.text.includes(query));
-  if (starFilterOn) pool = pool.filter(n => n.starred);
-
-  const sorted = pool.sort((a,b) => b.id - a.id);
-  if (!sorted.length) {
-    wall.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
-      <div class="empty-state-icon">${starFilterOn ? "★" : "🔍"}</div>
-      ${starFilterOn ? "還沒有加星號的便條" : "沒有找到符合的便條"}
-    </div>`;
-  } else {
-    wall.innerHTML = sorted.map(n => noteCardHtml(n)).join("");
-  }
+function renderNotes(){
+  const wall=document.getElementById("notes-wall");
+  const hintEl=document.getElementById("diary-hint");
+  const query=(document.getElementById("diary-search")||{}).value||"";
+  if(hintEl) hintEl.style.display=state.notes.length?"none":"block";
+  if(!state.notes.length){ wall.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon">📓</div>想寫就寫，不想寫也沒關係</div>`; return; }
+  let pool=[...state.notes];
+  if(query) pool=pool.filter(n=>n.text.includes(query));
+  if(starFilterOn) pool=pool.filter(n=>n.starred);
+  pool.sort((a,b)=>b.id-a.id);
+  if(!pool.length){ wall.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon">${starFilterOn?"★":"🔍"}</div>${starFilterOn?"還沒有加星號的便條":"沒有找到符合的便條"}</div>`; return; }
+  wall.innerHTML=pool.map(n=>noteCardHtml(n)).join("");
 }
-function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
-
-function openNoteModal(id) {
-  editingNoteId = id || null;
-  const ta = document.getElementById("note-textarea");
-  const del = document.getElementById("note-delete-btn");
-  const dt = document.getElementById("note-modal-date");
-  if (id) {
-    const n = state.notes.find(x=>x.id==id);
-    ta.value = n ? n.text : "";
-    dt.textContent = n ? n.date.slice(2).replace(/-/g,".") : "";
-    del.style.display = "block";
-  } else {
-    ta.value = "";
-    dt.textContent = todayStr().slice(2).replace(/-/g,".");
-    del.style.display = "none";
-  }
+function openNoteModal(id){
+  editingNoteId=id||null;
+  const ta=document.getElementById("note-textarea");
+  const del=document.getElementById("note-delete-btn");
+  const dt=document.getElementById("note-modal-date");
+  if(id){ const n=state.notes.find(x=>x.id==id); ta.value=n?n.text:""; dt.textContent=n?n.date.slice(2).replace(/-/g,"."):todayStr().slice(2).replace(/-/g,"."); del.style.display="block"; }
+  else { ta.value=""; dt.textContent=todayStr().slice(2).replace(/-/g,"."); del.style.display="none"; }
   document.getElementById("note-modal").classList.add("open");
-  setTimeout(()=>ta.focus(), 300);
+  setTimeout(()=>ta.focus(),300);
 }
-function closeNoteModal() {
-  document.getElementById("note-modal").classList.remove("open");
-  editingNoteId = null;
+function closeNoteModal(){ document.getElementById("note-modal").classList.remove("open"); editingNoteId=null; }
+function saveNote(){
+  const text=document.getElementById("note-textarea").value.trim();
+  if(!text){ showToast("寫點什麼吧 🌸"); return; }
+  if(editingNoteId){ const n=state.notes.find(x=>x.id==editingNoteId); if(n) n.text=text; }
+  else state.notes.push({id:Date.now(),date:todayStr(),text,starred:false});
+  saveState(); closeNoteModal(); renderNotes(); showToast("儲存了 ✨");
 }
-function saveNote() {
-  const text = document.getElementById("note-textarea").value.trim();
-  if (!text) { showToast("寫點什麼吧 🌸"); return; }
-  if (editingNoteId) {
-    const n = state.notes.find(x=>x.id==editingNoteId);
-    if (n) { n.text = text; }
-  } else {
-    state.notes.push({ id: Date.now(), date: todayStr(), text, starred: false });
-  }
-  saveState();
-  closeNoteModal();
-  renderNotes();
-  renderCalendar();
-  showToast("儲存了 ✨");
+function deleteNote(){
+  if(!editingNoteId) return;
+  state.notes=state.notes.filter(x=>x.id!=editingNoteId);
+  saveState(); closeNoteModal(); renderNotes(); showToast("已刪除");
 }
-function deleteNote() {
-  if (!editingNoteId) return;
-  state.notes = state.notes.filter(x=>x.id!=editingNoteId);
-  saveState();
-  closeNoteModal();
-  renderNotes();
-  renderCalendar();
-  showToast("已刪除");
-}
-function toggleStar(id) {
-  const n = state.notes.find(x=>x.id==id);
-  if (n) { n.starred = !n.starred; saveState(); renderNotes(); }
-}
-
-// ── CALENDAR ──
-function renderCalendar() {
-  const mnames = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-  document.getElementById("cal-month").textContent = calYear+" · "+mnames[calMonth];
-  const grid = document.getElementById("cal-grid");
-  const wds = ["日","一","二","三","四","五","六"];
-  let html = wds.map(w=>`<div class="cal-weekday">${w}</div>`).join("");
-  const first = new Date(calYear,calMonth,1).getDay();
-  const days = new Date(calYear,calMonth+1,0).getDate();
-  const prev = new Date(calYear,calMonth,0).getDate();
-  const today = todayStr();
-  for(let i=first-1;i>=0;i--) html+=`<div class="cal-day other-month">${prev-i}</div>`;
-  for(let d=1;d<=days;d++){
-    const ds=`${calYear}-${String(calMonth+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-    let cls="cal-day";
-    if(ds===today) cls+=" today";
-    if(state.checkinDates.includes(ds)) cls+=" checked-in";
-    const noteCount = state.notes.filter(n=>n.date===ds).length;
-    if(noteCount||(state.savedQuotes[ds]&&state.savedQuotes[ds].length)||(state.savedCards[ds]&&state.savedCards[ds].length)) cls+=" has-note";
-    if(ds===calSelectedDate) cls+=" selected";
-    const countBadge = noteCount>1 ? `<span class="note-count">${noteCount}</span>` : "";
-    html+=`<div class="${cls}" onclick="selectCalDay('${ds}')">${d}${countBadge}</div>`;
-  }
-  const total=first+days;
-  const rem=total%7===0?0:7-total%7;
-  for(let i=1;i<=rem;i++) html+=`<div class="cal-day other-month">${i}</div>`;
-  grid.innerHTML=html;
-  if(calSelectedDate) renderCalDetail(calSelectedDate);
-}
-function calNav(dir){ calMonth+=dir; if(calMonth<0){calMonth=11;calYear--;} if(calMonth>11){calMonth=0;calYear++;} calSelectedDate=null; renderCalendar(); document.getElementById("cal-day-detail").innerHTML=`<div class="cal-detail-empty">選擇一天，看看那天的紀錄</div>`; }
-function selectCalDay(ds){ calSelectedDate=ds; renderCalendar(); }
-function calItem(text, extraClass) {
-  const long = text.length > 40;
-  return `<div class="cal-detail-item${extraClass?" "+extraClass:""}" onclick="this.classList.toggle('expanded')">
-    <div class="item-text">${text}</div>
-    ${long ? '<div class="expand-hint">點一下展開</div>' : ""}
-  </div>`;
-}
-function renderCalDetail(ds){
-  const d=document.getElementById("cal-day-detail");
-  let html=`<div class="cal-day-detail-title">${ds.slice(2).replace(/-/g,".")} 的紀錄</div>`;
-  if(state.checkinDates.includes(ds)) html+=calItem("🌱 這天打卡了");
-  const dayNotes = state.notes.filter(n=>n.date===ds);
-  if (dayNotes.length === 1) {
-    html += calItem((dayNotes[0].starred?"★ ":"")+esc(dayNotes[0].text));
-  } else if (dayNotes.length > 1) {
-    html += `<div class="cal-detail-item" onclick="goToDiary()" style="cursor:pointer">
-      📓 這天寫了 ${dayNotes.length} 篇便條，點一下到日記頁查看
-    </div>`;
-  }
-  (state.savedQuotes[ds]||[]).forEach(qi=>{ html+=calItem("「"+QUOTES[qi].text+"」","saved-quote"); });
-  (state.savedCards[ds]||[]).forEach(c=>{ html+=calItem("🌸 "+esc(c),"saved-card"); });
-  const hasAny = state.checkinDates.includes(ds)
-    || dayNotes.length
-    || (state.savedQuotes[ds]&&state.savedQuotes[ds].length)
-    || (state.savedCards[ds]&&state.savedCards[ds].length);
-  if(!hasAny) html+=`<div class="cal-detail-empty">這天沒有紀錄</div>`;
-  d.innerHTML=html;
-}
-function goToDiary() {
-  const btns = document.querySelectorAll(".nav-btn");
-  const btn = btns[2]; // order: today, badges, diary, cal, settings
-  if (btn) switchTab('diary', btn);
-}
+function toggleStar(id){ const n=state.notes.find(x=>x.id==id); if(n){n.starred=!n.starred;saveState();renderNotes();} }
 
 // ── SETTINGS ──
 function saveName(v){ state.name=(v.trim()||state.name); saveState(); document.getElementById("top-greeting").textContent=state.name+"，你好"; showToast("名字更新了 🌸"); }
-function exportData(){
-  const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
-  const a=document.createElement("a"); a.href=URL.createObjectURL(b);
-  a.download=`gentle-mirror-${todayStr()}.json`; a.click(); showToast("已下載備份檔案");
-}
+function exportData(){ const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download=`gentle-mirror-${todayStr()}.json`; a.click(); showToast("已下載備份檔案"); }
 function importData(e){
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=ev=>{
     try{
-      const imported = JSON.parse(ev.target.result);
-      Object.assign(state, imported);
-      if (Array.isArray(state.savedCards)) state.savedCards = {};
-      if (!state.dailyMood) state.dailyMood = {};
-      if (!state.dailyQuote) state.dailyQuote = {};
-      saveState();
-      showToast("資料還原成功 ✨");
-      initApp();
-      renderNotes();
-      renderCalendar();
+      const d=JSON.parse(ev.target.result);
+      Object.assign(state,d);
+      if(Array.isArray(state.savedCards)) state.savedCards={};
+      if(!state.dailyMood) state.dailyMood={};
+      if(!state.dailyQuote) state.dailyQuote={};
+      if(!state.dailyTask) state.dailyTask={};
+      if(!state.customQuotes) state.customQuotes=[];
+      saveState(); showToast("資料還原成功 ✨"); initApp(); renderNotes();
     }catch{ showToast("檔案格式不對，請確認"); }
   };
   r.readAsText(f); e.target.value="";
 }
-function clearData(){ if(!confirm("確定要清除所有資料嗎？這個動作無法復原。")) return; localStorage.removeItem("gm_v2"); location.reload(); }
+function clearData(){ if(!confirm("確定要清除所有資料嗎？這個動作無法復原。")) return; localStorage.removeItem("gm_v3"); location.reload(); }
 
 // ── TABS ──
 function switchTab(name,btn){
@@ -1711,31 +1064,22 @@ function switchTab(name,btn){
 }
 
 // ── UTILS ──
-function showToast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg; t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),2200);
-}
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
+function showToast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
 function confetti(){
-  const wrap=document.getElementById("confetti-wrap");
-  const cols=["#e8a87c","#a8c5b0","#b8a4d4","#f2c4c4","#f0c060","#a8d4e8"];
+  const wrap=document.getElementById("confetti-wrap"), cols=["#e8a87c","#a8c5b0","#b8a4d4","#f2c4c4","#f0c060","#a8d4e8"];
   for(let i=0;i<32;i++){
     const p=document.createElement("div"); p.className="confetti-piece";
     p.style.left=Math.random()*100+"vw"; p.style.top="-10px";
     p.style.background=cols[Math.floor(Math.random()*cols.length)];
-    p.style.animationDelay=Math.random()*0.5+"s";
-    p.style.animationDuration=(0.9+Math.random()*0.6)+"s";
+    p.style.animationDelay=Math.random()*0.5+"s"; p.style.animationDuration=(0.9+Math.random()*0.6)+"s";
     wrap.appendChild(p); setTimeout(()=>p.remove(),2000);
   }
 }
 
 // ── BOOT ──
 loadState();
-if(state.name){
-  document.getElementById("welcome-screen").style.display="none";
-  document.getElementById("app").style.display="flex";
-  initApp();
-}
+if(state.name){ document.getElementById("welcome-screen").style.display="none"; document.getElementById("app").style.display="flex"; initApp(); }
 </script>
 </body>
 </html>
