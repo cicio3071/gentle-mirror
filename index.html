@@ -2,7 +2,13 @@
 <html lang="zh-Hant" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="輕鏡 · 你今天存在著 — 一個只屬於你的小角落">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="輕鏡">
+<meta name="theme-color" content="#fdf8f4" id="theme-color-meta">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23fef4ec'/%3E%3Cellipse cx='32' cy='30' rx='14' ry='18' fill='none' stroke='%23e8a87c' stroke-width='3.5'/%3E%3Cline x1='32' y1='48' x2='32' y2='54' stroke='%23e8a87c' stroke-width='3' stroke-linecap='round'/%3E%3Cellipse cx='32' cy='28' rx='6' ry='8' fill='%23e8a87c' opacity='0.25'/%3E%3C/svg%3E">
 <title>輕鏡 · 你今天存在著</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Nunito:wght@300;400;600&display=swap');
@@ -707,7 +713,6 @@ const TIMER_QUOTES = [
 let state = {
   name:"", theme:"light",
   checkinDates:[],
-  savedQuotes:{},
   notes:[],
   dailyMood:{},
   dailyQuote:{},
@@ -770,7 +775,11 @@ function applyTheme(t){
   document.getElementById("theme-light-btn").classList.toggle("active",t==="light");
   document.getElementById("theme-dark-btn").classList.toggle("active",t==="dark");
 }
-function setTheme(t){ state.theme=t; saveState(); applyTheme(t); }
+function setTheme(t){
+  state.theme=t; saveState(); applyTheme(t);
+  const meta=document.getElementById("theme-color-meta");
+  if(meta) meta.setAttribute("content", t==="dark"?"#1c1f26":"#fdf8f4");
+}
 
 // ── CHECKIN ──
 function renderCheckin(){
@@ -1078,10 +1087,37 @@ function importData(e){
   };
   r.readAsText(f); e.target.value="";
 }
-function clearData(){ if(!confirm("確定要清除所有資料嗎？這個動作無法復原。")) return; localStorage.removeItem("gm_v3"); location.reload(); }
+function clearData(){
+  showConfirm("確定要清除所有資料嗎？這個動作無法復原。", ()=>{
+    localStorage.removeItem("gm_v3"); location.reload();
+  });
+}
+function showConfirm(msg, onConfirm){
+  const existing = document.getElementById("confirm-overlay");
+  if(existing) existing.remove();
+  const el = document.createElement("div");
+  el.id = "confirm-overlay";
+  el.style.cssText = "position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px";
+  el.innerHTML = `<div style="background:var(--surface);border-radius:20px;padding:32px 28px;max-width:300px;width:100%;text-align:center">
+    <div style="font-size:15px;color:var(--text-main);line-height:1.8;margin-bottom:24px">${msg}</div>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button onclick="document.getElementById('confirm-overlay').remove()" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface2);font-size:14px;font-family:inherit;color:var(--text-sub);cursor:pointer">取消</button>
+      <button id="confirm-ok" style="flex:1;padding:12px;border-radius:12px;border:none;background:#c4807a;color:white;font-size:14px;font-family:inherit;cursor:pointer">確定</button>
+    </div>
+  </div>`;
+  document.body.appendChild(el);
+  document.getElementById("confirm-ok").onclick = ()=>{ el.remove(); onConfirm(); };
+  el.onclick = e=>{ if(e.target===el) el.remove(); };
+}
 
 // ── TABS ──
 function switchTab(name,btn){
+  // pause timer if leaving timer tab while running
+  if(name !== "timer" && timerRunning){
+    timerRunning = false;
+    clearInterval(timerInterval);
+    document.getElementById("timer-start-btn").textContent = "繼續";
+  }
   document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
   document.getElementById("tab-"+name).classList.add("active");
