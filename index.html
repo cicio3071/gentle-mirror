@@ -27,6 +27,10 @@
   --checkin-idle-shadow: rgba(232,168,124,0.3);
   --checkin-done-shadow: rgba(168,197,176,0.3);
   --timer-track: #f0e6da; --timer-fill: #e8a87c;
+  --lane-other: #8fa8c2; --lane-other-bg: #eef3f7;
+  --lane-process: #c99a4e; --lane-process-bg: #faf2e2;
+  --lane-turn: #d97c5f; --lane-turn-bg: #fcece6;
+  --lane-done: #8fb59c; --lane-done-bg: #eef5f0;
 }
 [data-theme="dark"] {
   --bg: #1c1f26; --surface: #252930; --surface2: #2d323c;
@@ -41,6 +45,10 @@
   --checkin-idle-shadow: rgba(232,168,124,0.12);
   --checkin-done-shadow: rgba(122,184,152,0.12);
   --timer-track: #363c48; --timer-fill: #e8a87c;
+  --lane-other: #8fa8c2; --lane-other-bg: #232a33;
+  --lane-process: #d4a860; --lane-process-bg: #2c2822;
+  --lane-turn: #e0937a; --lane-turn-bg: #2e2420;
+  --lane-done: #8fb59c; --lane-done-bg: #202823;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -209,78 +217,51 @@ body {
 .response-btn:hover { border-color: var(--accent2); color: var(--accent2); }
 .response-btn.saved { border-color: var(--accent3); color: var(--accent3); }
 
-/* ── TODAY TASK ── */
-.todotask-input-row { display: flex; gap: 10px; margin-bottom: 16px; }
-.todotask-input {
-  flex: 1; padding: 13px 16px; border: 1.5px solid var(--border); border-radius: 12px;
-  background: var(--surface); font-size: 15px; font-family: inherit;
-  color: var(--text-main); outline: none; transition: border-color 0.2s, background 0.4s;
-}
-.todotask-input:focus { border-color: var(--accent1); }
-.todotask-set-btn {
-  padding: 13px 18px; border-radius: 12px; border: none;
-  background: linear-gradient(135deg,var(--accent1),#d4897a);
-  color: white; font-size: 14px; font-family: inherit; cursor: pointer; flex-shrink: 0;
-}
-.todotask-display {
-  padding: 20px; background: var(--surface2); border-radius: 16px;
-  border: 1.5px solid var(--border); display: flex; align-items: center; gap: 16px;
-  cursor: pointer; transition: all 0.2s; user-select: none;
-}
-.todotask-display.done { background: var(--flip-back); border-color: var(--accent2); }
-.todotask-circle {
-  width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  font-size: 16px; transition: all 0.2s;
-}
-.todotask-display.done .todotask-circle { background: var(--accent2); border-color: var(--accent2); color: white; }
-.todotask-text { font-size: 16px; line-height: 1.6; flex: 1; }
-.todotask-display.done .todotask-text { text-decoration: line-through; color: var(--text-sub); }
-.todotask-done-msg { margin-top: 14px; font-size: 14px; color: var(--accent2); text-align: center; line-height: 1.8; animation: fadeIn 0.4s ease; }
-.todotask-empty { font-size: 14px; color: var(--text-light); text-align: center; padding: 20px 0 4px; line-height: 1.9; }
-.todotask-hint { font-size: 13px; color: var(--text-light); text-align: center; margin-top: 16px; line-height: 1.8; }
+/* ── CASE BOARD (候辦) ── */
+.case-board { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+.case-lane { flex: 0 0 78vw; max-width: 300px; scroll-snap-align: start; min-width: 0; }
+@media (min-width: 768px) { .case-board { overflow-x: visible; } .case-lane { flex: 1 1 0; max-width: none; } }
+.lane-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; margin-bottom: 10px; }
+.lane-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.lane-name { font-size: 13.5px; font-weight: 500; flex: 1; }
+.lane-count { font-size: 12px; color: var(--text-sub); }
+.case-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 15px; margin-bottom: 10px; cursor: pointer; box-shadow: var(--shadow-card); transition: transform 0.15s, border-color 0.2s; }
+.case-card:active { transform: scale(0.98); }
+.case-card.remind { border-color: var(--lane-color, var(--border)); }
+.case-title { font-size: 14.5px; font-weight: 500; line-height: 1.5; margin-bottom: 4px; }
+.case-org { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; }
+.case-note { font-size: 12.5px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.case-foot { display: flex; align-items: center; justify-content: space-between; }
+.wait-label { font-size: 11.5px; color: var(--text-light); }
+.wait-dots { display: flex; gap: 3px; }
+.wait-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+.wait-dot.filled { background: var(--lane-color, var(--text-sub)); }
+.lane-select { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.lane-opt { padding: 10px 8px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface2); font-size: 12.5px; text-align: center; cursor: pointer; color: var(--text-sub); transition: all 0.15s; }
+.lane-opt.selected { border-color: var(--opt-color); background: var(--opt-bg); color: var(--text-main); font-weight: 500; }
 
-/* ── TIMER ── */
-.timer-area { display: flex; flex-direction: column; align-items: center; padding: 8px 0 16px; }
-.timer-svg-wrap { position: relative; width: 200px; height: 200px; margin-bottom: 20px; }
-.timer-svg { transform: rotate(-90deg); }
-.timer-track { fill: none; stroke: var(--timer-track); stroke-width: 8; }
-.timer-fill { fill: none; stroke: var(--timer-fill); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
-.timer-label {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-}
-.timer-time { font-size: 36px; font-weight: 300; color: var(--text-main); letter-spacing: 0.02em; }
-.timer-subtext { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
-.timer-quote { font-size: 15px; color: var(--text-sub); text-align: center; line-height: 1.9; min-height: 52px; margin-bottom: 20px; font-weight: 300; padding: 0 8px; }
-.timer-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
-.timer-btn {
-  padding: 10px 22px; border-radius: 20px; border: 1.5px solid var(--border);
-  background: var(--surface2); font-size: 14px; font-family: inherit;
-  color: var(--text-sub); cursor: pointer; transition: all 0.2s;
-}
-.timer-btn:hover { border-color: var(--accent1); color: var(--accent1); }
-.timer-btn.primary { background: linear-gradient(135deg,var(--accent1),#d4897a); color: white; border-color: transparent; }
-.timer-btn.primary:hover { opacity: 0.9; border-color: transparent; color: white; }
-.timer-preset-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
-.timer-preset-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); font-size: 13px; font-family: inherit; color: var(--text-sub); cursor: pointer; transition: all 0.2s; }
-.timer-preset-btn:hover, .timer-preset-btn.active { border-color: var(--accent1); color: var(--accent1); }
-.timer-custom-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
-.timer-custom-label { font-size: 13px; color: var(--text-sub); }
-.timer-custom-input {
-  width: 64px; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 10px;
-  background: var(--surface); font-size: 15px; font-family: inherit;
-  color: var(--text-main); outline: none; text-align: center;
-  transition: border-color 0.2s, background 0.4s;
-}
-.timer-custom-input:focus { border-color: var(--accent1); }
-.timer-done-overlay {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 6px;
-  animation: fadeIn 0.5s ease; pointer-events: none;
-}
-.timer-done-icon { font-size: 48px; }
-.timer-done-text { font-size: 15px; color: var(--accent2); font-weight: 500; }
+/* ── CHECKLIST (清單) ── */
+.checklist-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 12px; cursor: pointer; box-shadow: var(--shadow-card); transition: transform 0.15s; }
+.checklist-item:active { transform: scale(0.98); }
+.checklist-item-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+.checklist-item-sub { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; }
+.progress-track { height: 6px; border-radius: 4px; background: var(--surface2); overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg,var(--accent1),var(--accent2)); border-radius: 4px; transition: width 0.3s; }
+.progress-text { font-size: 11.5px; color: var(--text-light); margin-top: 6px; text-align: right; }
+.checklist-item.done { opacity: 0.7; }
+.step-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1.5px solid var(--border); cursor: pointer; }
+.step-row:last-child { border-bottom: none; }
+.step-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: white; margin-top: 1px; transition: all 0.2s; }
+.step-check.checked { background: var(--accent2); border-color: var(--accent2); }
+.step-text { font-size: 14.5px; line-height: 1.6; flex: 1; }
+.step-text.checked { text-decoration: line-through; color: var(--text-sub); }
+.template-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--surface2); border-radius: 12px; border: 1.5px solid var(--border); margin-bottom: 8px; }
+.template-item-name { font-size: 14px; }
+.template-item-sub { font-size: 11.5px; color: var(--text-sub); margin-top: 2px; }
+.template-item-actions { display: flex; gap: 6px; }
+.tpl-mini-btn { background: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 5px 10px; font-size: 12px; color: var(--text-sub); font-family: inherit; cursor: pointer; }
+.select-field { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); font-size: 14.5px; font-family: inherit; color: var(--text-main); outline: none; margin-bottom: 16px; }
+.select-field:focus { border-color: var(--accent1); }
 
 /* ── DIARY ── */
 .diary-hint { font-size: 13px; color: var(--text-light); line-height: 1.8; text-align: center; padding: 4px 12px 14px; }
@@ -406,8 +387,8 @@ body {
       <div class="nav-brand-sub">你今天存在著</div>
     </div>
     <button class="nav-btn active" onclick="switchTab('today',this)"><span class="nav-icon">🌱</span>今天</button>
-    <button class="nav-btn" onclick="switchTab('task',this)"><span class="nav-icon">✅</span>今日事</button>
-    <button class="nav-btn" onclick="switchTab('timer',this)"><span class="nav-icon">⏱</span>放空</button>
+    <button class="nav-btn" onclick="switchTab('cases',this)"><span class="nav-icon">📨</span>候辦</button>
+    <button class="nav-btn" onclick="switchTab('checklist',this)"><span class="nav-icon">📋</span>清單</button>
     <button class="nav-btn" onclick="switchTab('diary',this)"><span class="nav-icon">📓</span>便條</button>
     <button class="nav-btn" onclick="switchTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
   </nav>
@@ -465,46 +446,31 @@ body {
         </div>
       </div>
 
-      <!-- TODAY TASK -->
-      <div class="tab-pane" id="tab-task">
+      <!-- CASES (候辦) -->
+      <div class="tab-pane" id="tab-cases">
         <div class="card">
-          <div class="card-title">今日一件事</div>
-          <div id="todotask-area"></div>
+          <div class="card-title">候辦看板</div>
+          <div style="font-size:13px;color:var(--text-sub);line-height:1.8;margin-bottom:14px">卡住的案子，不是待辦，是等待——球在誰手上，一眼就看到。</div>
+          <button class="diary-add-btn" onclick="openCaseModal()"><span>＋</span> 新增案件</button>
+          <div class="case-board" id="case-board"></div>
         </div>
       </div>
 
-      <!-- TIMER -->
-      <div class="tab-pane" id="tab-timer">
+      <!-- CHECKLIST (清單) -->
+      <div class="tab-pane" id="tab-checklist">
         <div class="card">
-          <div class="card-title">放空一下</div>
-          <div class="timer-area">
-            <div class="timer-svg-wrap">
-              <svg class="timer-svg" width="200" height="200" viewBox="0 0 200 200">
-                <circle class="timer-track" cx="100" cy="100" r="88"/>
-                <circle class="timer-fill" id="timer-fill" cx="100" cy="100" r="88"/>
-              </svg>
-              <div class="timer-label">
-                <div class="timer-time" id="timer-display">05:00</div>
-                <div class="timer-subtext" id="timer-subtext">選好時間再開始</div>
-              </div>
-            </div>
-            <div class="timer-quote" id="timer-quote"></div>
-            <div class="timer-preset-row">
-              <button class="timer-preset-btn" onclick="setTimerPreset(3)">3 分</button>
-              <button class="timer-preset-btn" onclick="setTimerPreset(5)">5 分</button>
-              <button class="timer-preset-btn" onclick="setTimerPreset(10)">10 分</button>
-              <button class="timer-preset-btn" onclick="setTimerPreset(15)">15 分</button>
-            </div>
-            <div class="timer-custom-row" style="margin-bottom:20px">
-              <span class="timer-custom-label">自訂</span>
-              <input class="timer-custom-input" id="timer-custom" type="number" min="1" max="60" value="5" onchange="setTimerCustom(this.value)">
-              <span class="timer-custom-label">分鐘</span>
-            </div>
-            <div class="timer-controls">
-              <button class="timer-btn primary" id="timer-start-btn" onclick="toggleTimer()">開始</button>
-              <button class="timer-btn" onclick="resetTimer()">重設</button>
-            </div>
-          </div>
+          <div class="card-title">進行中的檢查清單</div>
+          <button class="diary-add-btn" onclick="openInstanceModal()"><span>＋</span> 開始新的檢查清單</button>
+          <div id="checklist-active-list"></div>
+        </div>
+        <div class="card" id="checklist-done-card" style="display:none">
+          <div class="card-title">已完成</div>
+          <div id="checklist-done-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">範本</div>
+          <div style="font-size:13px;color:var(--text-sub);line-height:1.8;margin-bottom:14px">把重複性的流程存成範本（例如採購案的固定步驟），下次開新案子就能直接套用。</div>
+          <button class="diary-add-btn" onclick="openTemplateModal()"><span>📋</span> 管理我的範本</button>
         </div>
       </div>
 
@@ -584,6 +550,86 @@ body {
       <button onclick="addCustomQuoteFromNotebook()">加入</button>
     </div>
     <div class="custom-quote-list" id="notebook-quote-list"></div>
+  </div>
+</div>
+
+<!-- CASE MODAL -->
+<div class="overlay" id="case-modal">
+  <div class="overlay-sheet">
+    <div class="overlay-header">
+      <div class="overlay-title" id="case-modal-title">新增案件</div>
+      <button class="overlay-close" id="case-modal-close">✕</button>
+    </div>
+    <div style="margin-top:12px">
+      <input class="setting-input" style="width:100%;margin-bottom:16px" id="case-title-input" placeholder="案件名稱，例如：114學年教科書採購">
+      <input class="setting-input" style="width:100%;margin-bottom:16px" id="case-org-input" placeholder="對象／單位（選填）">
+      <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px">目前卡在</div>
+      <div class="lane-select" id="lane-select"></div>
+      <textarea class="note-textarea" style="min-height:70px;margin-bottom:16px" id="case-note-input" placeholder="備註：需要記住的細節、下一步該做什麼…" maxlength="300"></textarea>
+      <div class="note-modal-actions">
+        <button class="note-save-btn" onclick="saveCase()">儲存</button>
+        <button class="note-delete-btn" id="case-delete-btn" style="display:none" onclick="deleteCase()">刪除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATE MANAGER MODAL -->
+<div class="overlay" id="template-modal">
+  <div class="overlay-sheet">
+    <div class="overlay-header">
+      <div class="overlay-title">📋 我的範本</div>
+      <button class="overlay-close" id="template-modal-close">✕</button>
+    </div>
+    <div class="overlay-sub">每行一個步驟，存起來下次就能直接套用。</div>
+    <div id="template-list" style="margin-bottom:18px"></div>
+    <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px" id="template-form-title">新增範本</div>
+    <input class="setting-input" style="width:100%;margin-bottom:10px" id="template-name-input" placeholder="範本名稱，例如：教科書採購流程">
+    <textarea class="note-textarea" style="min-height:120px;margin-bottom:12px" id="template-steps-input" placeholder="每行一個步驟&#10;例如：&#10;確認書單&#10;發文詢價&#10;比價與簽核&#10;下單訂購"></textarea>
+    <div class="note-modal-actions">
+      <button class="note-save-btn" onclick="saveTemplate()">儲存範本</button>
+      <button class="note-delete-btn" id="template-cancel-edit-btn" style="display:none" onclick="cancelTemplateEdit()">取消編輯</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW INSTANCE MODAL -->
+<div class="overlay" id="instance-modal">
+  <div class="overlay-sheet">
+    <div class="overlay-header">
+      <div class="overlay-title">開始新的檢查清單</div>
+      <button class="overlay-close" id="instance-modal-close">✕</button>
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px">套用範本</div>
+      <select class="select-field" id="instance-template-select" onchange="onInstanceTemplateChange()"></select>
+      <input class="setting-input" style="width:100%;margin-bottom:16px" id="instance-title-input" placeholder="這次案件的名稱">
+      <div id="instance-adhoc-wrap" style="display:none">
+        <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px">每行一個步驟</div>
+        <textarea class="note-textarea" style="min-height:120px;margin-bottom:16px" id="instance-adhoc-steps" placeholder="這次要做的步驟…"></textarea>
+      </div>
+      <div class="note-modal-actions">
+        <button class="note-save-btn" onclick="createInstance()">開始</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST RUNNER MODAL -->
+<div class="overlay" id="runner-modal">
+  <div class="overlay-sheet">
+    <div class="overlay-header">
+      <div class="overlay-title" id="runner-title">清單</div>
+      <button class="overlay-close" id="runner-modal-close">✕</button>
+    </div>
+    <div class="progress-track" style="margin-bottom:4px">
+      <div class="progress-fill" id="runner-progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-text" id="runner-progress-text">0/0</div>
+    <div id="runner-steps" style="margin-top:12px"></div>
+    <div class="note-modal-actions" style="margin-top:16px">
+      <button class="note-delete-btn" onclick="deleteInstance()">刪除這份清單</button>
+    </div>
   </div>
 </div>
 
@@ -696,19 +742,6 @@ const MOOD_RESPONSES = {
   ],
 };
 
-const TIMER_QUOTES = [
-  "這幾分鐘是你的，什麼都不用想。",
-  "先停下來，其他的事等你回來再說。",
-  "你值得這段什麼都不做的時間。",
-  "呼吸就好，別的事情等一下再說。",
-  "放空也是一種工作，而且是你最重要的工作之一。",
-  "這幾分鐘，只屬於你自己。",
-  "你已經很努力了，先讓自己喘口氣。",
-  "不用做任何事，只是存在著就好。",
-  "這是你給自己的空白，好好待在裡面。",
-  "慢下來，感覺一下現在這個時刻。",
-];
-
 // ── STATE ──
 let state = {
   name:"", theme:"light",
@@ -716,8 +749,11 @@ let state = {
   notes:[],
   dailyMood:{},
   dailyQuote:{},
-  dailyTask:{},   // { "YYYY-MM-DD": { text:"", done:false } }
   customQuotes:[], // [{text, id}]
+  cases:[],         // [{id,title,org,note,lane,enteredAt,createdAt}]
+  reminderDays:7,
+  checklistTemplates:[],   // [{id,name,steps:[{id,text}]}]
+  checklistInstances:[],   // [{id,title,templateName,steps:[{id,text,done}],createdAt,completedAt}]
 };
 
 function getTW(d){ return new Date(d.getTime()+8*3600000); }
@@ -729,8 +765,11 @@ function loadState(){
     Object.assign(state,s);
     if(!state.dailyMood) state.dailyMood={};
     if(!state.dailyQuote) state.dailyQuote={};
-    if(!state.dailyTask) state.dailyTask={};
     if(!state.customQuotes) state.customQuotes=[];
+    if(!state.cases) state.cases=[];
+    if(!state.reminderDays) state.reminderDays=7;
+    if(!state.checklistTemplates) state.checklistTemplates=[];
+    if(!state.checklistInstances) state.checklistInstances=[];
   }catch(e){}
 }
 function saveState(){ localStorage.setItem("gm_v3",JSON.stringify(state)); }
@@ -746,7 +785,7 @@ function startApp(){
 
 // ── INIT ──
 let currentQuoteIdx=-1, currentMoodResponse="", starFilterOn=false;
-let timerTotal=300, timerLeft=300, timerRunning=false, timerInterval=null;
+let editingCaseId=null, editingTemplateId=null, activeInstanceId=null;
 
 function initApp(){
   applyTheme(state.theme);
@@ -761,12 +800,20 @@ function initApp(){
   nextQuote();
   restoreDailyMood();
   renderNotes();
-  renderTodayTask();
-  initTimer();
+  renderCaseBoard();
+  renderChecklistTab();
   document.getElementById("note-modal").onclick=function(e){if(e.target===this)closeNoteModal();};
   document.getElementById("note-modal-close").onclick=closeNoteModal;
   document.getElementById("notebook-overlay").onclick=function(e){if(e.target===this)closeNotebook();};
   document.getElementById("notebook-close").onclick=closeNotebook;
+  document.getElementById("case-modal").onclick=function(e){if(e.target===this)closeCaseModal();};
+  document.getElementById("case-modal-close").onclick=closeCaseModal;
+  document.getElementById("template-modal").onclick=function(e){if(e.target===this)closeTemplateModal();};
+  document.getElementById("template-modal-close").onclick=closeTemplateModal;
+  document.getElementById("instance-modal").onclick=function(e){if(e.target===this)closeInstanceModal();};
+  document.getElementById("instance-modal-close").onclick=closeInstanceModal;
+  document.getElementById("runner-modal").onclick=function(e){if(e.target===this)closeRunnerModal();};
+  document.getElementById("runner-modal-close").onclick=closeRunnerModal;
 }
 
 function updateStreak(){ document.getElementById("streak-badge").textContent="🌱 打卡 "+state.checkinDates.length+" 天"; }
@@ -791,8 +838,8 @@ function renderCheckin(){
   else { btn.className="checkin-btn idle"; btn.textContent="🌙"; label.textContent="點一下，告訴這一天你在這裡"; fb.textContent=""; }
 }
 function buildCheckinFeedback(){
-  const today=todayStr(), task=state.dailyTask[today];
-  if(task&&task.done) return "今天你完成了「"+task.text+"」，這很了不起。";
+  const today=todayStr(), doneToday=state.checklistInstances.filter(i=>i.completedAt&&i.completedAt.slice(0,10)===today);
+  if(doneToday.length) return "今天你完成了「"+doneToday[0].title+"」的清單，這很了不起。";
   return "";
 }
 function doCheckin(e){
@@ -912,105 +959,257 @@ function restoreDailyMood(){
   else{ currentMoodResponse=""; document.getElementById("mood-response").innerHTML=""; document.querySelectorAll(".mood-btn").forEach(b=>b.classList.remove("selected")); }
 }
 
-// ── TODAY TASK ──
-const TASK_DONE_MSGS = [
-  "你做到了，今天這件事完成了，了不起。",
-  "完成了！今天的你很厲害。",
-  "做到了這一件事，今天就夠了。",
-  "你今天說到做到，真的很好。",
-  "這件事打勾了，給自己拍拍手吧。",
+// ── CASE BOARD (候辦) ──
+const LANES = [
+  { key:'waiting_other',   name:'等待對方', icon:'📨', color:'var(--lane-other)',   bg:'var(--lane-other-bg)',   empty:'目前沒有等別人回覆的案子' },
+  { key:'waiting_process', name:'跑流程中', icon:'📋', color:'var(--lane-process)', bg:'var(--lane-process-bg)', empty:'目前沒有卡在簽核流程裡的案子' },
+  { key:'my_turn',         name:'輪到我了', icon:'✋', color:'var(--lane-turn)',    bg:'var(--lane-turn-bg)',    empty:'目前沒有等你動手的案子' },
+  { key:'done',            name:'已結案',   icon:'✓',  color:'var(--lane-done)',    bg:'var(--lane-done-bg)',    empty:'還沒有結案的紀錄' },
 ];
-function renderTodayTask(){
-  const today=todayStr(), task=state.dailyTask[today];
-  const area=document.getElementById("todotask-area");
-  if(!task||!task.text){
-    area.innerHTML=`
-      <div class="todotask-empty">今天，只要完成一件事就夠了。</div>
-      <div class="todotask-input-row">
-        <input class="todotask-input" id="todotask-input" type="text" placeholder="這件事是…" maxlength="40">
-        <button class="todotask-set-btn" onclick="setTodayTask()">設定</button>
+function daysSince(ts){ return Math.max(0, Math.floor((Date.now()-ts)/86400000)); }
+function waitDotsHtml(days, laneColor){
+  const steps=5, per=Math.max(1, Math.round(state.reminderDays/steps));
+  let html="";
+  for(let i=0;i<steps;i++){ const filled=days>=per*(i+1); html+=`<div class="wait-dot ${filled?"filled":""}" style="--lane-color:${laneColor}"></div>`; }
+  return html;
+}
+function renderCaseBoard(){
+  const board=document.getElementById("case-board");
+  board.innerHTML=LANES.map(lane=>{
+    const items=state.cases.filter(c=>c.lane===lane.key).sort((a,b)=>b.enteredAt-a.enteredAt);
+    return `<div class="case-lane">
+      <div class="lane-head" style="background:${lane.bg}">
+        <div class="lane-dot" style="background:${lane.color}"></div>
+        <div class="lane-name">${lane.icon} ${lane.name}</div>
+        <div class="lane-count">${items.length}</div>
       </div>
-      <div class="todotask-hint">把最重要的一件事寫下來，完成後勾掉它。</div>`;
-  } else {
-    const doneMsg=task.done ? `<div class="todotask-done-msg">${TASK_DONE_MSGS[Math.floor(Math.random()*TASK_DONE_MSGS.length)]}</div>` : "";
-    area.innerHTML=`
-      <div class="todotask-display ${task.done?"done":""}" onclick="toggleTodayTask()">
-        <div class="todotask-circle">${task.done?"✓":""}</div>
-        <div class="todotask-text">${esc(task.text)}</div>
-      </div>
-      ${doneMsg}
-      ${!task.done?`<div class="todotask-hint" style="margin-top:12px">點一下完成它</div>`:""}`;
+      <div>${items.length ? items.map(c=>caseCardHtml(c,lane)).join("") : `<div class="empty-state" style="padding:24px 12px"><div class="empty-state-icon" style="font-size:26px">${lane.icon}</div>${lane.empty}</div>`}</div>
+    </div>`;
+  }).join("");
+}
+function caseCardHtml(c, lane){
+  if(lane.key==="done"){
+    const d=new Date(c.enteredAt);
+    const dateStr=`${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+    return `<div class="case-card" style="opacity:0.75" onclick="openCaseModal('${c.id}')">
+      <div class="case-title">${esc(c.title)}</div>
+      ${c.org?`<div class="case-org">${esc(c.org)}</div>`:""}
+      <div class="case-foot"><span class="wait-label">完成於 ${dateStr}</span><span style="color:var(--lane-done)">✓</span></div>
+    </div>`;
   }
+  const days=daysSince(c.enteredAt), remind=days>=state.reminderDays;
+  return `<div class="case-card ${remind?"remind":""}" style="--lane-color:${lane.color}" onclick="openCaseModal('${c.id}')">
+    <div class="case-title">${esc(c.title)}</div>
+    ${c.org?`<div class="case-org">${esc(c.org)}</div>`:""}
+    ${c.note?`<div class="case-note">${esc(c.note)}</div>`:""}
+    <div class="case-foot"><span class="wait-label">已等待 ${days} 天</span><div class="wait-dots">${waitDotsHtml(days,lane.color)}</div></div>
+  </div>`;
 }
-function setTodayTask(){
-  const input=document.getElementById("todotask-input");
-  const text=(input?input.value:"").trim();
-  if(!text){ showToast("先寫下想完成的事吧"); return; }
-  state.dailyTask[todayStr()]={text,done:false}; saveState();
-  renderTodayTask(); renderCheckin();
+function renderLaneSelect(selectedKey){
+  document.getElementById("lane-select").innerHTML=LANES.map(l=>`<div class="lane-opt ${l.key===selectedKey?"selected":""}"
+    style="--opt-color:${l.color};--opt-bg:${l.bg}" data-lane="${l.key}" onclick="pickLane('${l.key}')">${l.icon} ${l.name}</div>`).join("");
 }
-function toggleTodayTask(){
-  const today=todayStr(), task=state.dailyTask[today];
-  if(!task) return;
-  task.done=!task.done; saveState();
-  if(task.done){ confetti(); showToast("🎉 完成了！"); }
-  renderTodayTask(); renderCheckin();
+function pickLane(key){
+  document.querySelectorAll(".lane-opt").forEach(el=>el.classList.toggle("selected", el.dataset.lane===key));
+  document.getElementById("lane-select").dataset.selected=key;
+}
+function openCaseModal(id){
+  editingCaseId=id||null;
+  const titleEl=document.getElementById("case-modal-title");
+  const delBtn=document.getElementById("case-delete-btn");
+  if(id){
+    const c=state.cases.find(x=>x.id===id);
+    titleEl.textContent="編輯案件";
+    document.getElementById("case-title-input").value=c.title;
+    document.getElementById("case-org-input").value=c.org||"";
+    document.getElementById("case-note-input").value=c.note||"";
+    renderLaneSelect(c.lane);
+    delBtn.style.display="block";
+  } else {
+    titleEl.textContent="新增案件";
+    document.getElementById("case-title-input").value="";
+    document.getElementById("case-org-input").value="";
+    document.getElementById("case-note-input").value="";
+    renderLaneSelect("waiting_other");
+    delBtn.style.display="none";
+  }
+  document.getElementById("case-modal").classList.add("open");
+}
+function closeCaseModal(){ document.getElementById("case-modal").classList.remove("open"); editingCaseId=null; }
+function saveCase(){
+  const title=document.getElementById("case-title-input").value.trim();
+  if(!title){ showToast("先幫案子取個名字吧"); return; }
+  const org=document.getElementById("case-org-input").value.trim();
+  const note=document.getElementById("case-note-input").value.trim();
+  const lane=document.getElementById("lane-select").dataset.selected||"waiting_other";
+  const now=Date.now();
+  if(editingCaseId){
+    const c=state.cases.find(x=>x.id===editingCaseId);
+    c.title=title; c.org=org; c.note=note;
+    if(c.lane!==lane){ c.lane=lane; c.enteredAt=now; }
+  } else {
+    state.cases.push({id:String(now)+Math.random().toString(36).slice(2,6), title, org, note, lane, enteredAt:now, createdAt:now});
+  }
+  saveState(); closeCaseModal(); renderCaseBoard(); showToast("儲存了 ✨");
+}
+function deleteCase(){
+  if(!editingCaseId) return;
+  state.cases=state.cases.filter(x=>x.id!==editingCaseId);
+  saveState(); closeCaseModal(); renderCaseBoard(); showToast("已刪除");
 }
 
-// ── TIMER ──
-const CIRC=2*Math.PI*88;
-function initTimer(){
-  document.getElementById("timer-fill").style.strokeDasharray=CIRC;
-  updateTimerDisplay();
-  const rq=TIMER_QUOTES[Math.floor(Math.random()*TIMER_QUOTES.length)];
-  document.getElementById("timer-quote").textContent=rq;
+// ── CHECKLIST TEMPLATES & INSTANCES (清單) ──
+function parseSteps(text){ return text.split("\n").map(s=>s.trim()).filter(Boolean); }
+function renderChecklistTab(){
+  renderInstanceList();
+  populateTemplateSelect();
 }
-function setTimerPreset(mins){
-  if(timerRunning) return;
-  document.querySelectorAll(".timer-preset-btn").forEach(b=>b.classList.remove("active"));
-  event.currentTarget.classList.add("active");
-  document.getElementById("timer-custom").value=mins;
-  timerTotal=mins*60; timerLeft=timerTotal; updateTimerDisplay();
+function renderInstanceList(){
+  const active=state.checklistInstances.filter(i=>!i.completedAt);
+  const done=state.checklistInstances.filter(i=>i.completedAt);
+  const activeList=document.getElementById("checklist-active-list");
+  activeList.innerHTML = active.length ? active.map(i=>instanceCardHtml(i)).join("") :
+    `<div class="empty-state"><div class="empty-state-icon">📋</div>還沒有進行中的清單<br>可以套用範本，或自己列步驟</div>`;
+  const doneCard=document.getElementById("checklist-done-card");
+  const doneList=document.getElementById("checklist-done-list");
+  if(done.length){
+    doneCard.style.display="block";
+    doneList.innerHTML=done.sort((a,b)=>b.completedAt.localeCompare(a.completedAt)).map(i=>instanceCardHtml(i)).join("");
+  } else { doneCard.style.display="none"; }
 }
-function setTimerCustom(val){
-  if(timerRunning) return;
-  const mins=Math.max(1,Math.min(60,parseInt(val)||5));
-  document.querySelectorAll(".timer-preset-btn").forEach(b=>b.classList.remove("active"));
-  timerTotal=mins*60; timerLeft=timerTotal; updateTimerDisplay();
+function instanceCardHtml(inst){
+  const total=inst.steps.length, checked=inst.steps.filter(s=>s.done).length;
+  const pct = total? Math.round(checked/total*100) : 0;
+  const doneCls = inst.completedAt ? "done" : "";
+  return `<div class="checklist-item ${doneCls}" onclick="openRunnerModal('${inst.id}')">
+    <div class="checklist-item-title">${esc(inst.title)}</div>
+    <div class="checklist-item-sub">${inst.templateName?esc(inst.templateName):"自訂清單"}</div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="progress-text">${checked}/${total}</div>
+  </div>`;
 }
-function toggleTimer(){
-  if(timerLeft<=0){ resetTimer(); return; }
-  timerRunning=!timerRunning;
-  document.getElementById("timer-start-btn").textContent=timerRunning?"暫停":"繼續";
-  if(timerRunning){
-    const rq=TIMER_QUOTES[Math.floor(Math.random()*TIMER_QUOTES.length)];
-    document.getElementById("timer-quote").textContent=rq;
-    timerInterval=setInterval(()=>{
-      timerLeft--; updateTimerDisplay();
-      if(timerLeft<=0){ clearInterval(timerInterval); timerRunning=false; timerDone(); }
-    },1000);
-  } else { clearInterval(timerInterval); }
+function populateTemplateSelect(){
+  const sel=document.getElementById("instance-template-select");
+  sel.innerHTML = `<option value="">不套用範本，自己列步驟</option>` +
+    state.checklistTemplates.map(t=>`<option value="${t.id}">${esc(t.name)}（${t.steps.length} 步驟）</option>`).join("");
 }
-function resetTimer(){
-  clearInterval(timerInterval); timerRunning=false; timerLeft=timerTotal;
-  document.getElementById("timer-start-btn").textContent="開始";
-  document.getElementById("timer-subtext").textContent="選好時間再開始";
-  updateTimerDisplay();
+function onInstanceTemplateChange(){
+  const val=document.getElementById("instance-template-select").value;
+  document.getElementById("instance-adhoc-wrap").style.display = val ? "none" : "block";
 }
-function updateTimerDisplay(){
-  const mm=String(Math.floor(timerLeft/60)).padStart(2,"0");
-  const ss=String(timerLeft%60).padStart(2,"0");
-  document.getElementById("timer-display").textContent=mm+":"+ss;
-  const pct=timerTotal>0?timerLeft/timerTotal:1;
-  document.getElementById("timer-fill").style.strokeDashoffset=CIRC*(1-pct);
-  document.getElementById("timer-subtext").textContent=timerRunning?"放空中…":"選好時間再開始";
+function openInstanceModal(){
+  document.getElementById("instance-title-input").value="";
+  document.getElementById("instance-adhoc-steps").value="";
+  populateTemplateSelect();
+  onInstanceTemplateChange();
+  document.getElementById("instance-modal").classList.add("open");
 }
-function timerDone(){
-  document.getElementById("timer-display").textContent="00:00";
-  document.getElementById("timer-subtext").textContent="";
-  document.getElementById("timer-start-btn").textContent="再來一次";
-  document.getElementById("timer-quote").textContent="時間到了，你可以回來繼續了。";
-  confetti();
+function closeInstanceModal(){ document.getElementById("instance-modal").classList.remove("open"); }
+function createInstance(){
+  const title=document.getElementById("instance-title-input").value.trim();
+  if(!title){ showToast("先幫這次的案件取個名字吧"); return; }
+  const tplId=document.getElementById("instance-template-select").value;
+  let steps=[], templateName="";
+  if(tplId){
+    const tpl=state.checklistTemplates.find(t=>t.id===tplId);
+    if(tpl){ templateName=tpl.name; steps=tpl.steps.map(s=>({id:s.id, text:s.text, done:false})); }
+  } else {
+    const raw=parseSteps(document.getElementById("instance-adhoc-steps").value);
+    if(!raw.length){ showToast("至少列一個步驟吧"); return; }
+    steps=raw.map((text,idx)=>({id:"s"+idx+"_"+Date.now(), text, done:false}));
+  }
+  const inst={ id:String(Date.now())+Math.random().toString(36).slice(2,6), title, templateName, steps, createdAt:new Date().toISOString(), completedAt:null };
+  state.checklistInstances.push(inst);
+  saveState(); closeInstanceModal(); renderInstanceList(); showToast("清單開始了 🌿");
+}
+function openRunnerModal(id){
+  activeInstanceId=id;
+  renderRunner();
+  document.getElementById("runner-modal").classList.add("open");
+}
+function closeRunnerModal(){ document.getElementById("runner-modal").classList.remove("open"); activeInstanceId=null; }
+function renderRunner(){
+  const inst=state.checklistInstances.find(x=>x.id===activeInstanceId);
+  if(!inst) return;
+  document.getElementById("runner-title").textContent=inst.title;
+  const total=inst.steps.length, checked=inst.steps.filter(s=>s.done).length;
+  const pct= total? Math.round(checked/total*100) : 0;
+  document.getElementById("runner-progress-fill").style.width=pct+"%";
+  document.getElementById("runner-progress-text").textContent=checked+"/"+total;
+  document.getElementById("runner-steps").innerHTML = inst.steps.map(s=>`
+    <div class="step-row" onclick="toggleStep('${s.id}')">
+      <div class="step-check ${s.done?"checked":""}">${s.done?"✓":""}</div>
+      <div class="step-text ${s.done?"checked":""}">${esc(s.text)}</div>
+    </div>`).join("");
+}
+function toggleStep(stepId){
+  const inst=state.checklistInstances.find(x=>x.id===activeInstanceId);
+  if(!inst) return;
+  const step=inst.steps.find(s=>s.id===stepId);
+  if(!step) return;
+  step.done=!step.done;
+  const allDone = inst.steps.every(s=>s.done);
+  if(allDone && !inst.completedAt){ inst.completedAt=new Date().toISOString(); confetti(); showToast("🎉 這份清單完成了！"); }
+  else if(!allDone && inst.completedAt){ inst.completedAt=null; }
+  saveState(); renderRunner(); renderInstanceList(); renderCheckin();
+}
+function deleteInstance(){
+  if(!activeInstanceId) return;
+  state.checklistInstances=state.checklistInstances.filter(x=>x.id!==activeInstanceId);
+  saveState(); closeRunnerModal(); renderInstanceList(); showToast("已刪除");
+}
+
+// ── TEMPLATE MANAGER ──
+function renderTemplateList(){
+  const list=document.getElementById("template-list");
+  if(!state.checklistTemplates.length){ list.innerHTML=`<div class="custom-quote-empty">還沒有任何範本</div>`; return; }
+  list.innerHTML=state.checklistTemplates.map(t=>`
+    <div class="template-item">
+      <div><div class="template-item-name">${esc(t.name)}</div><div class="template-item-sub">${t.steps.length} 個步驟</div></div>
+      <div class="template-item-actions">
+        <button class="tpl-mini-btn" onclick="editTemplate('${t.id}')">編輯</button>
+        <button class="tpl-mini-btn" onclick="deleteTemplate('${t.id}')">刪除</button>
+      </div>
+    </div>`).join("");
+}
+function openTemplateModal(){
+  cancelTemplateEdit();
+  renderTemplateList();
+  document.getElementById("template-modal").classList.add("open");
+}
+function closeTemplateModal(){ document.getElementById("template-modal").classList.remove("open"); }
+function editTemplate(id){
+  const t=state.checklistTemplates.find(x=>x.id===id);
+  if(!t) return;
+  editingTemplateId=id;
+  document.getElementById("template-form-title").textContent="編輯範本";
+  document.getElementById("template-name-input").value=t.name;
+  document.getElementById("template-steps-input").value=t.steps.map(s=>s.text).join("\n");
+  document.getElementById("template-cancel-edit-btn").style.display="block";
+}
+function cancelTemplateEdit(){
+  editingTemplateId=null;
+  document.getElementById("template-form-title").textContent="新增範本";
+  document.getElementById("template-name-input").value="";
+  document.getElementById("template-steps-input").value="";
+  document.getElementById("template-cancel-edit-btn").style.display="none";
+}
+function saveTemplate(){
+  const name=document.getElementById("template-name-input").value.trim();
+  const raw=parseSteps(document.getElementById("template-steps-input").value);
+  if(!name){ showToast("先幫範本取個名字吧"); return; }
+  if(!raw.length){ showToast("至少列一個步驟吧"); return; }
+  if(editingTemplateId){
+    const t=state.checklistTemplates.find(x=>x.id===editingTemplateId);
+    t.name=name; t.steps=raw.map((text,idx)=>({id:"t"+idx+"_"+Date.now(), text}));
+  } else {
+    state.checklistTemplates.push({ id:String(Date.now())+Math.random().toString(36).slice(2,6), name, steps:raw.map((text,idx)=>({id:"t"+idx+"_"+Date.now(), text})) });
+  }
+  saveState(); cancelTemplateEdit(); renderTemplateList(); populateTemplateSelect(); showToast("範本存好了 🌿");
+}
+function deleteTemplate(id){
+  state.checklistTemplates=state.checklistTemplates.filter(x=>x.id!==id);
+  saveState(); renderTemplateList(); populateTemplateSelect(); showToast("已刪除");
 }
 
 // ── DIARY ──
@@ -1080,8 +1279,11 @@ function importData(e){
       Object.assign(state,d);
         if(!state.dailyMood) state.dailyMood={};
       if(!state.dailyQuote) state.dailyQuote={};
-      if(!state.dailyTask) state.dailyTask={};
       if(!state.customQuotes) state.customQuotes=[];
+      if(!state.cases) state.cases=[];
+      if(!state.reminderDays) state.reminderDays=7;
+      if(!state.checklistTemplates) state.checklistTemplates=[];
+      if(!state.checklistInstances) state.checklistInstances=[];
       saveState(); showToast("資料還原成功 ✨"); initApp(); renderNotes();
     }catch{ showToast("檔案格式不對，請確認"); }
   };
@@ -1112,12 +1314,6 @@ function showConfirm(msg, onConfirm){
 
 // ── TABS ──
 function switchTab(name,btn){
-  // pause timer if leaving timer tab while running
-  if(name !== "timer" && timerRunning){
-    timerRunning = false;
-    clearInterval(timerInterval);
-    document.getElementById("timer-start-btn").textContent = "繼續";
-  }
   document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
   document.getElementById("tab-"+name).classList.add("active");
