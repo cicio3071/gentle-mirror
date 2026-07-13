@@ -237,7 +237,8 @@ body {
 .wait-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
 .wait-dot.filled { background: var(--lane-color, var(--text-sub)); }
 .lane-select { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
-.lane-opt { padding: 10px 8px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface2); font-size: 12.5px; text-align: center; cursor: pointer; color: var(--text-sub); transition: all 0.15s; }
+.lane-opt { padding: 13px 8px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface2); font-size: 13.5px; text-align: center; cursor: pointer; color: var(--text-sub); transition: all 0.15s; }
+@media (min-width: 768px) { .lane-select { grid-template-columns: repeat(4, 1fr); } }
 .lane-opt.selected { border-color: var(--opt-color); background: var(--opt-bg); color: var(--text-main); font-weight: 500; }
 
 /* ── CHECKLIST (清單) ── */
@@ -308,10 +309,14 @@ body {
 .note-modal.open { opacity: 1; pointer-events: all; }
 .note-modal-inner { width: 100%; max-width: 480px; margin: 0 auto; background: var(--surface); border-radius: 24px 24px 0 0; padding: 24px 24px calc(40px + env(safe-area-inset-bottom)); max-height: 85vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s, background 0.4s; }
 .note-modal.open .note-modal-inner { transform: translateY(0); }
+@media (min-width: 768px) {
+  .note-modal { align-items: center; padding: 24px; }
+  .note-modal-inner { border-radius: 24px; max-width: 560px; max-height: 88vh; padding: 32px 32px 36px; }
+}
 .note-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .note-modal-title { font-size: 15px; color: var(--text-sub); }
 .note-modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); }
-.note-textarea { width: 100%; min-height: 140px; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 15px; line-height: 1.8; font-family: inherit; color: var(--text-main); background: var(--bg); resize: none; outline: none; transition: border-color 0.2s, background 0.4s; }
+.note-textarea { width: 100%; min-height: 140px; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 15px; line-height: 1.8; font-family: inherit; color: var(--text-main); background: var(--bg); resize: vertical; outline: none; transition: border-color 0.2s, background 0.4s; }
 .note-textarea:focus { border-color: var(--accent1); }
 .note-modal-actions { display: flex; gap: 10px; margin-top: 14px; }
 .note-save-btn { flex: 1; padding: 13px; background: linear-gradient(135deg,var(--accent1),#d4897a); color: white; border: none; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; }
@@ -354,12 +359,18 @@ body {
 /* ── OVERLAY (notebook + future sheets) ── */
 .overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .overlay.open { opacity: 1; pointer-events: all; }
-.overlay-sheet { width: 100%; max-width: 480px; margin: 0 auto; background: var(--surface); border-radius: 24px 24px 0 0; padding: 28px 24px calc(48px + env(safe-area-inset-bottom)); max-height: 80vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s, background 0.4s; }
+.overlay-sheet { width: 100%; max-width: 480px; margin: 0 auto; background: var(--surface); border-radius: 24px 24px 0 0; padding: 28px 24px calc(48px + env(safe-area-inset-bottom)); max-height: 85vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s, background 0.4s; }
 .overlay.open .overlay-sheet { transform: translateY(0); }
 .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .overlay-title { font-size: 17px; font-weight: 500; }
 .overlay-sub { font-size: 13px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.8; }
 .overlay-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); padding: 0; }
+@media (min-width: 768px) {
+  .overlay { align-items: center; padding: 24px; }
+  .overlay-sheet { border-radius: 24px; max-width: 580px; max-height: 88vh; padding: 36px 36px 40px; }
+  .overlay-title { font-size: 19px; }
+  .overlay-sub { font-size: 14px; }
+}
 /* notebook button */
 .notebook-btn { background: none; border: none; font-size: 22px; cursor: pointer; padding: 4px; border-radius: 8px; transition: opacity 0.2s; }
 .notebook-btn:hover { opacity: 0.7; }
@@ -561,11 +572,11 @@ body {
       <button class="overlay-close" id="case-modal-close">✕</button>
     </div>
     <div style="margin-top:12px">
-      <input class="setting-input" style="width:100%;margin-bottom:16px" id="case-title-input" placeholder="案件名稱，例如：114學年教科書採購">
-      <input class="setting-input" style="width:100%;margin-bottom:16px" id="case-org-input" placeholder="對象／單位（選填）">
+      <input class="setting-input" style="width:100%;margin-bottom:16px;font-size:15px;padding:13px 15px" id="case-title-input" placeholder="案件名稱，例如：114學年教科書採購">
+      <input class="setting-input" style="width:100%;margin-bottom:16px;font-size:15px;padding:13px 15px" id="case-org-input" placeholder="對象／單位（選填）">
       <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px">目前卡在</div>
       <div class="lane-select" id="lane-select"></div>
-      <textarea class="note-textarea" style="min-height:70px;margin-bottom:16px" id="case-note-input" placeholder="備註：需要記住的細節、下一步該做什麼…" maxlength="300"></textarea>
+      <textarea class="note-textarea" style="min-height:160px;margin-bottom:16px;margin-top:4px" id="case-note-input" placeholder="備註：需要記住的細節、下一步該做什麼…" maxlength="300"></textarea>
       <div class="note-modal-actions">
         <button class="note-save-btn" onclick="saveCase()">儲存</button>
         <button class="note-delete-btn" id="case-delete-btn" style="display:none" onclick="deleteCase()">刪除</button>
@@ -584,8 +595,8 @@ body {
     <div class="overlay-sub">每行一個步驟，存起來下次就能直接套用。</div>
     <div id="template-list" style="margin-bottom:18px"></div>
     <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px" id="template-form-title">新增範本</div>
-    <input class="setting-input" style="width:100%;margin-bottom:10px" id="template-name-input" placeholder="範本名稱，例如：教科書採購流程">
-    <textarea class="note-textarea" style="min-height:120px;margin-bottom:12px" id="template-steps-input" placeholder="每行一個步驟&#10;例如：&#10;確認書單&#10;發文詢價&#10;比價與簽核&#10;下單訂購"></textarea>
+    <input class="setting-input" style="width:100%;margin-bottom:10px;font-size:15px;padding:13px 15px" id="template-name-input" placeholder="範本名稱，例如：教科書採購流程">
+    <textarea class="note-textarea" style="min-height:200px;margin-bottom:12px" id="template-steps-input" placeholder="每行一個步驟&#10;例如：&#10;確認書單&#10;發文詢價&#10;比價與簽核&#10;下單訂購"></textarea>
     <div class="note-modal-actions">
       <button class="note-save-btn" onclick="saveTemplate()">儲存範本</button>
       <button class="note-delete-btn" id="template-cancel-edit-btn" style="display:none" onclick="cancelTemplateEdit()">取消編輯</button>
@@ -603,10 +614,10 @@ body {
     <div style="margin-top:12px">
       <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px">套用範本</div>
       <select class="select-field" id="instance-template-select" onchange="onInstanceTemplateChange()"></select>
-      <input class="setting-input" style="width:100%;margin-bottom:16px" id="instance-title-input" placeholder="這次案件的名稱">
+      <input class="setting-input" style="width:100%;margin-bottom:16px;font-size:15px;padding:13px 15px" id="instance-title-input" placeholder="這次案件的名稱">
       <div id="instance-adhoc-wrap" style="display:none">
         <div style="font-size:13px;color:var(--text-sub);margin-bottom:8px">每行一個步驟</div>
-        <textarea class="note-textarea" style="min-height:120px;margin-bottom:16px" id="instance-adhoc-steps" placeholder="這次要做的步驟…"></textarea>
+        <textarea class="note-textarea" style="min-height:200px;margin-bottom:16px" id="instance-adhoc-steps" placeholder="這次要做的步驟…"></textarea>
       </div>
       <div class="note-modal-actions">
         <button class="note-save-btn" onclick="createInstance()">開始</button>
@@ -870,9 +881,6 @@ function nextQuote(forceNew){
     const q=pool[idx]||pool[0];
     qt.textContent=q.text; qs.textContent="── "+q.source;
     qt.style.opacity=1; qs.style.opacity=1;
-    const saved=(state.savedQuotes[today]||[]).includes(idx);
-    const btn=document.getElementById("quote-save-btn");
-    btn.textContent=saved?"已收藏 ✓":"收藏這句"; btn.className=saved?"quote-btn saved":"quote-btn";
   },300);
 }
 function addCurrentQuoteToLibrary(){
@@ -949,8 +957,6 @@ function refreshMood(mood){
   const pool=MOOD_RESPONSES[mood], text=pool[Math.floor(Math.random()*pool.length)];
   currentMoodResponse=text; state.dailyMood[todayStr()]={mood,text}; saveState();
   document.querySelector(".response-text").textContent=text;
-  const sb=document.getElementById("card-save-btn");
-  if(sb){sb.textContent="收藏這句";sb.className="response-btn";}
 }
 
 function restoreDailyMood(){
