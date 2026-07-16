@@ -227,15 +227,11 @@ body {
 .lane-count { font-size: 12px; color: var(--text-sub); }
 .case-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 15px; margin-bottom: 10px; cursor: pointer; box-shadow: var(--shadow-card); transition: transform 0.15s, border-color 0.2s; }
 .case-card:active { transform: scale(0.98); }
-.case-card.remind { border-color: var(--lane-color, var(--border)); }
 .case-title { font-size: 14.5px; font-weight: 500; line-height: 1.5; margin-bottom: 4px; }
 .case-org { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; }
 .case-note { font-size: 12.5px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .case-foot { display: flex; align-items: center; justify-content: space-between; }
 .wait-label { font-size: 11.5px; color: var(--text-light); }
-.wait-dots { display: flex; gap: 3px; }
-.wait-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
-.wait-dot.filled { background: var(--lane-color, var(--text-sub)); }
 .lane-select { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
 .lane-opt { padding: 13px 8px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface2); font-size: 13.5px; text-align: center; cursor: pointer; color: var(--text-sub); transition: all 0.15s; }
 @media (min-width: 768px) { .lane-select { grid-template-columns: repeat(4, 1fr); } }
@@ -762,7 +758,6 @@ let state = {
   dailyQuote:{},
   customQuotes:[], // [{text, id}]
   cases:[],         // [{id,title,org,note,lane,enteredAt,createdAt}]
-  reminderDays:7,
   checklistTemplates:[],   // [{id,name,steps:[{id,text}]}]
   checklistInstances:[],   // [{id,title,templateName,steps:[{id,text,done}],createdAt,completedAt}]
 };
@@ -778,7 +773,6 @@ function loadState(){
     if(!state.dailyQuote) state.dailyQuote={};
     if(!state.customQuotes) state.customQuotes=[];
     if(!state.cases) state.cases=[];
-    if(!state.reminderDays) state.reminderDays=7;
     if(!state.checklistTemplates) state.checklistTemplates=[];
     if(!state.checklistInstances) state.checklistInstances=[];
   }catch(e){}
@@ -972,13 +966,6 @@ const LANES = [
   { key:'my_turn',         name:'輪到我了', icon:'✋', color:'var(--lane-turn)',    bg:'var(--lane-turn-bg)',    empty:'目前沒有等你動手的案子' },
   { key:'done',            name:'已結案',   icon:'✓',  color:'var(--lane-done)',    bg:'var(--lane-done-bg)',    empty:'還沒有結案的紀錄' },
 ];
-function daysSince(ts){ return Math.max(0, Math.floor((Date.now()-ts)/86400000)); }
-function waitDotsHtml(days, laneColor){
-  const steps=5, per=Math.max(1, Math.round(state.reminderDays/steps));
-  let html="";
-  for(let i=0;i<steps;i++){ const filled=days>=per*(i+1); html+=`<div class="wait-dot ${filled?"filled":""}" style="--lane-color:${laneColor}"></div>`; }
-  return html;
-}
 function renderCaseBoard(){
   const board=document.getElementById("case-board");
   board.innerHTML=LANES.map(lane=>{
@@ -1003,12 +990,10 @@ function caseCardHtml(c, lane){
       <div class="case-foot"><span class="wait-label">完成於 ${dateStr}</span><span style="color:var(--lane-done)">✓</span></div>
     </div>`;
   }
-  const days=daysSince(c.enteredAt), remind=days>=state.reminderDays;
-  return `<div class="case-card ${remind?"remind":""}" style="--lane-color:${lane.color}" onclick="openCaseModal('${c.id}')">
+  return `<div class="case-card" onclick="openCaseModal('${c.id}')">
     <div class="case-title">${esc(c.title)}</div>
     ${c.org?`<div class="case-org">${esc(c.org)}</div>`:""}
     ${c.note?`<div class="case-note">${esc(c.note)}</div>`:""}
-    <div class="case-foot"><span class="wait-label">已等待 ${days} 天</span><div class="wait-dots">${waitDotsHtml(days,lane.color)}</div></div>
   </div>`;
 }
 function renderLaneSelect(selectedKey){
@@ -1287,8 +1272,7 @@ function importData(e){
       if(!state.dailyQuote) state.dailyQuote={};
       if(!state.customQuotes) state.customQuotes=[];
       if(!state.cases) state.cases=[];
-      if(!state.reminderDays) state.reminderDays=7;
-      if(!state.checklistTemplates) state.checklistTemplates=[];
+        if(!state.checklistTemplates) state.checklistTemplates=[];
       if(!state.checklistInstances) state.checklistInstances=[];
       saveState(); showToast("資料還原成功 ✨"); initApp(); renderNotes();
     }catch{ showToast("檔案格式不對，請確認"); }
