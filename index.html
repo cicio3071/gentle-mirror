@@ -11,6 +11,18 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23fef4ec'/%3E%3Cellipse cx='32' cy='30' rx='14' ry='18' fill='none' stroke='%23e8a87c' stroke-width='3.5'/%3E%3Cline x1='32' y1='48' x2='32' y2='54' stroke='%23e8a87c' stroke-width='3' stroke-linecap='round'/%3E%3Cellipse cx='32' cy='28' rx='6' ry='8' fill='%23e8a87c' opacity='0.25'/%3E%3C/svg%3E">
 <title>輕鏡 · 你今天存在著</title>
 <style>
+  /* Emoji fallback patch：修復 Windows 更新後 emoji 顯示為方框的問題。
+     只針對 emoji 的 unicode 範圍掛載系統 emoji 字型，不影響其他文字。 */
+  @font-face {
+    font-family: 'Noto Sans TC';
+    src: local('Segoe UI Emoji'), local('Noto Color Emoji'), local('Apple Color Emoji');
+    unicode-range: U+1F300-1FAFF, U+2600-27BF, U+2B00-2BFF, U+1F1E6-1F1FF, U+200D, U+FE0F, U+2934-2935, U+3030, U+303D, U+3297, U+3299;
+  }
+  @font-face {
+    font-family: 'Nunito';
+    src: local('Segoe UI Emoji'), local('Noto Color Emoji'), local('Apple Color Emoji');
+    unicode-range: U+1F300-1FAFF, U+2600-27BF, U+2B00-2BFF, U+1F1E6-1F1FF, U+200D, U+FE0F, U+2934-2935, U+3030, U+303D, U+3297, U+3299;
+  }
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Nunito:wght@300;400;600&display=swap');
 
 /* ── THEMES ── */
@@ -54,7 +66,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { background: var(--bg); transition: background 0.4s; height: 100%; }
 body {
-  font-family: 'Noto Sans TC','Nunito','Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;
+  font-family: 'Noto Sans TC','Nunito',sans-serif;
   background: var(--bg); color: var(--text-main);
   height: 100%; height: 100dvh; overflow: hidden;
   transition: background 0.4s, color 0.4s;
